@@ -14,6 +14,11 @@
         android:theme="@style/Theme.Coverist"
         tools:targetApi="31">
         <activity
+            android:name=".InputActivity"
+            android:exported="false"
+            android:label="@string/title_activity_input"
+            android:theme="@style/Theme.Coverist" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

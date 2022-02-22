@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Coverist</string>
+    <string name="title_activity_input">InputActivity</string>
 </resources>
