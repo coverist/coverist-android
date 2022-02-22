@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Coverist</string>
     <string name="title_activity_input">InputActivity</string>
+    <string name="book_info_q1">제목과 저자를 입력해주세요</string>
+    <string name="book_info_q2">장르를 선택해주세요</string>
+    <string name="book_info_q3">세부 장르를 선택해주세요</string>
+    <string name="book_info_q4">태그를 입력해주세요</string>
+    <string name="book_info_q5">출판사 이미지를 넣어주세요</string>
 </resources>

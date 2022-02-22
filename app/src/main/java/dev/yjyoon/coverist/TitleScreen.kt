@@ -40,7 +40,7 @@ fun Logo() {
 fun StartButton(navController: NavController) {
     Button(
         onClick = { navController.navigate("book-info-input") },
-        contentPadding = PaddingValues(vertical = 18.dp, horizontal = 24.dp),
+        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 20.dp),
         shape = MaterialTheme.shapes.medium
     ) {
         Text("새로운 표지 만들기", style = MaterialTheme.typography.h6)
