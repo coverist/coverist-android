@@ -1,9 +1,9 @@
 package dev.yjyoon.coverist
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -17,14 +17,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import dev.yjyoon.coverist.BookInfoInput.Companion.bookInfoInputQuestions
-import dev.yjyoon.coverist.ui.theme.CoveristTheme
 
 @Composable
-fun BookInfoInputScreen() {
+fun BookInfoInputScreen(navController: NavController, viewModel: BookInfoInputViewModel) {
     val (step, setStep) = remember { mutableStateOf(0) }
     val question = bookInfoInputQuestions[step]
     val maxStep = bookInfoInputQuestions.size
+
+    BackHandler {
+        if (step > 0) setStep(step - 1)
+        else {
+            navController.navigate("title") {
+                popUpTo("title") { inclusive = true }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -32,6 +41,7 @@ fun BookInfoInputScreen() {
         },
         content = { innerPadding ->
             InputContent(
+                viewModel = viewModel,
                 question = question,
                 modifier = Modifier
                     .fillMaxSize()
@@ -42,7 +52,7 @@ fun BookInfoInputScreen() {
             BookInfoInputBottomBar(
                 showPrevious = step > 0,
                 onPreviousClick = { setStep(step - 1) },
-                enabledNext = true,
+                enabledNext = viewModel.isValidateInput(step),
                 onNextClick = { setStep(step + 1) },
                 showDone = step + 1 == maxStep,
                 onDoneClick = {}
@@ -77,7 +87,11 @@ fun QuestionTextBox(text: String) {
 }
 
 @Composable
-fun InputContent(question: BookInfoInput.Question, modifier: Modifier = Modifier) {
+fun InputContent(
+    viewModel: BookInfoInputViewModel,
+    question: BookInfoInput.Question,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -85,9 +99,21 @@ fun InputContent(question: BookInfoInput.Question, modifier: Modifier = Modifier
     ) {
         QuestionTextBox(text = stringResource(id = question.questionText))
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 22.dp)
         ) {
-
+            when (question.inputType) {
+                BookInfoInput.Type.TitleAndAuthor -> {
+                    TitleAndAuthorInput(
+                        title = viewModel.bookTitle,
+                        author = viewModel.bookAuthor,
+                        onEditTitle = viewModel::editTitle,
+                        onEditAuthor = viewModel::editAuthor
+                    )
+                }
+                else -> {}
+            }
         }
     }
 }
@@ -205,7 +231,4 @@ fun BookInfoInputBottomBar(
 @Preview
 @Composable
 fun BookInfoInputPreview() {
-    CoveristTheme {
-        BookInfoInputScreen()
-    }
 }
