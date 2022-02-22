@@ -1,13 +1,9 @@
 package dev.yjyoon.coverist
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,32 +13,27 @@ import androidx.navigation.NavController
 
 @Composable
 fun TitleScreen(navController: NavController) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
-    ) {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.navigate("book-info-input") },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary
+            ) {
+                Icon(Icons.Default.Add, null)
+            }
+        }
+    ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier.padding(innerPadding)
         ) {
             Logo()
-            StartButton(navController = navController)
         }
     }
 }
 
 @Composable
 fun Logo() {
-    Text(text = "Coverist", style = MaterialTheme.typography.h3.copy(fontWeight = FontWeight.Bold))
-}
-
-@Composable
-fun StartButton(navController: NavController) {
-    Button(
-        onClick = { navController.navigate("book-info-input") },
-        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 20.dp),
-        shape = MaterialTheme.shapes.medium
-    ) {
-        Text("새로운 표지 만들기", style = MaterialTheme.typography.h6)
-    }
 }

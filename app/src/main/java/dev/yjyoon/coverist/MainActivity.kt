@@ -3,15 +3,12 @@ package dev.yjyoon.coverist
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,16 +16,17 @@ import androidx.navigation.compose.rememberNavController
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
 
 class MainActivity : ComponentActivity() {
+    private val bookInfoInputViewModel by viewModels<BookInfoInputViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CoveristTheme {
                 val navController = rememberNavController()
-                Scaffold { innerPadding ->
-                    CoveristNavHost(
-                        navController = navController,
-                        modifier = Modifier.padding(innerPadding))
-                }
+                CoveristNavHost(
+                    navController = navController,
+                    bookInfoInputViewModel = bookInfoInputViewModel
+                )
             }
         }
     }
@@ -37,6 +35,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CoveristNavHost(
     navController: NavHostController,
+    bookInfoInputViewModel: BookInfoInputViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(navController = navController, startDestination = "title", modifier = modifier) {
@@ -44,7 +43,7 @@ fun CoveristNavHost(
             TitleScreen(navController = navController)
         }
         composable("book-info-input") {
-            BookInfoInputScreen()
+            BookInfoInputScreen(viewModel = bookInfoInputViewModel, navController = navController)
         }
     }
 }
