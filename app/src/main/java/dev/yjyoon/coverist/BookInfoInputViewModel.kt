@@ -43,6 +43,8 @@ class BookInfoInputViewModel : ViewModel() {
     fun isValidateInput(step: Int): Boolean =
         when (step) {
             0 -> bookTitle != "" && bookAuthor != ""
+            1 -> bookGenre != ""
+            2 -> bookSubGenre != ""
             else -> true
         }
 }

@@ -101,7 +101,7 @@ fun InputContent(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 22.dp)
+                .padding(top = 22.dp, bottom = 4.dp)
         ) {
             when (question.inputType) {
                 BookInfoInput.Type.TitleAndAuthor -> {
@@ -110,6 +110,42 @@ fun InputContent(
                         author = viewModel.bookAuthor,
                         onEditTitle = viewModel::editTitle,
                         onEditAuthor = viewModel::editAuthor
+                    )
+                }
+                BookInfoInput.Type.Genre -> {
+                    GenreGrid(
+                        genres = listOf(
+                            "컴퓨터/IT",
+                            "소설",
+                            "외국어",
+                            "예술/대중문화",
+                            "자기계발",
+                            "중/고등참고서",
+                            "초등참고서",
+                            "정치/사회",
+                            "건강",
+                            "만화",
+                            "청소년",
+                            "인문",
+                            "잡지",
+                            "취업/수험서",
+                            "경제/경영",
+                            "시/에세이",
+                            "기술/공학",
+                            "여행",
+                            "과학",
+                            "어린이전집",
+                            "역사/문화",
+                            "유아(0~7세)",
+                            "가정/육아",
+                            "취미/실용/스포츠",
+                            "한국소개도서",
+                            "요리",
+                            "종교",
+                            "어린이(초등)"
+                        ),
+                        selected = viewModel.bookGenre,
+                        onChange = viewModel::editGenre
                     )
                 }
                 else -> {}
@@ -210,6 +246,7 @@ fun BookInfoInputBottomBar(
                 OutlinedButton(
                     onClick = onPreviousClick,
                     contentPadding = PaddingValues(vertical = 12.dp, horizontal = 20.dp),
+                    shape = MaterialTheme.shapes.medium,
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("이전", style = MaterialTheme.typography.subtitle1)
@@ -219,6 +256,7 @@ fun BookInfoInputBottomBar(
             Button(
                 onClick = if (showDone) onDoneClick else onNextClick,
                 enabled = enabledNext,
+                shape = MaterialTheme.shapes.medium,
                 contentPadding = PaddingValues(vertical = 12.dp, horizontal = 20.dp),
                 modifier = Modifier.weight(1f)
             ) {
