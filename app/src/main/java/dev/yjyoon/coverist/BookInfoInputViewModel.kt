@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ class BookInfoInputViewModel @Inject constructor(
     var bookPublisher by mutableStateOf("")
 
     lateinit var genres: LiveData<List<String>>
+    lateinit var subGenres: LiveData<List<String>>
 
     fun editTitle(title: String) {
         bookTitle = title.trim()
@@ -36,6 +38,7 @@ class BookInfoInputViewModel @Inject constructor(
 
     fun editGenre(genre: String) {
         bookGenre = genre
+        bookSubGenre = ""
     }
 
     fun editSubGenre(subGenre: String) {
@@ -52,10 +55,19 @@ class BookInfoInputViewModel @Inject constructor(
         bookTags.remove(tag)
     }
 
-    fun loadGenres() {
+    fun loadGenres(): LiveData<List<String>> {
         viewModelScope.launch {
             genres = genreRepository.getGenres()
         }
+        return genres
+    }
+
+    fun loadSubGenres(genre: String): LiveData<List<String>> {
+        viewModelScope.launch {
+            subGenres = genreRepository.getSubGenres(genre)
+        }
+        print(subGenres)
+        return subGenres
     }
 
     fun isValidateInput(step: Int): Boolean =

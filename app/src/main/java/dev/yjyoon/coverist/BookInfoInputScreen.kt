@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -113,45 +114,34 @@ fun InputContent(
                     )
                 }
                 BookInfoInput.Type.Genre -> {
+                    val genres: List<String> by viewModel.loadGenres()
+                        .observeAsState(initial = List(28) { " " })
+
                     GenreGrid(
-                        genres = listOf(
-                            "컴퓨터/IT",
-                            "소설",
-                            "외국어",
-                            "예술/대중문화",
-                            "자기계발",
-                            "중/고등참고서",
-                            "초등참고서",
-                            "정치/사회",
-                            "건강",
-                            "만화",
-                            "청소년",
-                            "인문",
-                            "잡지",
-                            "취업/수험서",
-                            "경제/경영",
-                            "시/에세이",
-                            "기술/공학",
-                            "여행",
-                            "과학",
-                            "어린이전집",
-                            "역사/문화",
-                            "유아(0~7세)",
-                            "가정/육아",
-                            "취미/실용/스포츠",
-                            "한국소개도서",
-                            "요리",
-                            "종교",
-                            "어린이(초등)"
-                        ),
+                        genres = genres,
                         selected = viewModel.bookGenre,
                         onChange = viewModel::editGenre
+                    )
+                }
+                BookInfoInput.Type.SubGenre -> {
+                    val subGenres: List<String> by viewModel.loadSubGenres(viewModel.bookGenre)
+                        .observeAsState(initial = List(28) { " " })
+
+                    GenreGrid(
+                        genres = subGenres,
+                        selected = viewModel.bookSubGenre,
+                        onChange = viewModel::editSubGenre
                     )
                 }
                 else -> {}
             }
         }
     }
+}
+
+@Composable
+fun Loading() {
+    CircularProgressIndicator(modifier = Modifier.padding(144.dp))
 }
 
 @Composable

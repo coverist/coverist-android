@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 interface GenreRepository {
     suspend fun getGenres(): LiveData<List<String>>
+    suspend fun getSubGenres(genre: String): LiveData<List<String>>
 }
 
 class GenreRepositoryImpl @Inject constructor(
@@ -30,5 +31,22 @@ class GenreRepositoryImpl @Inject constructor(
         })
 
         return genres
+    }
+
+    override suspend fun getSubGenres(genre: String): LiveData<List<String>> {
+        val subGenres = MutableLiveData<List<String>>()
+
+        genreService.getSubGenres(genre).enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                if(response.isSuccessful) subGenres.value = response.body()
+                else subGenres.value = emptyList()
+            }
+
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                subGenres.value = emptyList()
+            }
+        })
+
+        return subGenres
     }
 }
