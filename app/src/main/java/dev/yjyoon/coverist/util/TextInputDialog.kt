@@ -7,14 +7,17 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextInputDialog(
     onDismissRequest: () -> Unit,
@@ -26,9 +29,11 @@ fun TextInputDialog(
 ) {
     // To auto-focus on TextField when dialog show
     val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+        keyboardController?.show()
     }
 
     Dialog(
@@ -62,6 +67,7 @@ fun TextInputDialog(
                             if(!isTextFieldError(text)) {
                                 onSubmit(text)
                                 onDismissRequest()
+                                keyboardController?.hide()
                             }
                         }
                     ),
@@ -73,6 +79,7 @@ fun TextInputDialog(
                     onClick = {
                         onSubmit(text)
                         onDismissRequest()
+                        keyboardController?.hide()
                     },
                     shape = CircleShape,
                     enabled = !isTextFieldError(text)
