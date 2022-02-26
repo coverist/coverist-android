@@ -1,5 +1,6 @@
 package dev.yjyoon.coverist.util
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -7,6 +8,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -21,6 +24,13 @@ fun TextInputDialog(
     onSubmit: (String) -> Unit,
     isTextFieldError: (String) -> Boolean
 ) {
+    // To auto-focus on TextField when dialog show
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     Dialog(
         onDismissRequest = onDismissRequest
     ) {
@@ -49,11 +59,14 @@ fun TextInputDialog(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            onSubmit(text)
-                            onDismissRequest()
+                            if(!isTextFieldError(text)) {
+                                onSubmit(text)
+                                onDismissRequest()
+                            }
                         }
                     ),
-                    isError = isTextFieldError(text)
+                    isError = isTextFieldError(text),
+                    modifier = Modifier.focusRequester(focusRequester)
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
