@@ -66,6 +66,10 @@ class BookInfoInputViewModel @Inject constructor(
         return false
     }
 
+    fun isNotFullTags(): Boolean {
+        return bookTags.size < 10
+    }
+
     fun loadGenres(): LiveData<List<String>> {
         viewModelScope.launch {
             genres = genreRepository.getGenres()

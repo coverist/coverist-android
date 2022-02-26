@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -98,6 +99,7 @@ fun GenreGrid(
 fun TagsInput(
     tags: List<String>,
     onAdd: (String) -> Unit,
+    enableAdd: Boolean,
     onDelete: (String) -> Unit,
     isInvalid: (String) -> Boolean
 ) {
@@ -113,14 +115,17 @@ fun TagsInput(
             TagChip(tag, onDelete)
         }
 
-        TagAdd(onClick = { showDialog = true })
+        TagAdd(
+            enabled = enableAdd,
+            onClick = { showDialog = true }
+        )
     }
 
     if (showDialog) {
         TextInputDialog(
             onDismissRequest = { showDialog = false },
             textFieldLabel = { Text("태그 입력") },
-            textFieldLeadingIcon = { Icon(Icons.Rounded.Tag,"Tag") },
+            textFieldLeadingIcon = { Icon(Icons.Rounded.Tag, "Tag") },
             submitButtonText = "추가",
             onSubmit = onAdd,
             isTextFieldError = isInvalid
@@ -129,8 +134,12 @@ fun TagsInput(
 }
 
 @Composable
-fun TagAdd(onClick: () -> Unit) {
+fun TagAdd(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
     IconButton(
+        enabled = enabled,
         onClick = onClick,
         modifier = Modifier
             .width(36.dp)
@@ -141,11 +150,16 @@ fun TagAdd(onClick: () -> Unit) {
             "Add tag.",
             modifier = Modifier
                 .background(
-                    color = MaterialTheme.colors.primary,
+                    color = if (enabled) MaterialTheme.colors.primary
+                            else MaterialTheme.colors.onSurface
+                                .copy(alpha = 0.12f)
+                                .compositeOver(MaterialTheme.colors.surface),
                     shape = CircleShape
                 )
                 .padding(8.dp),
-            tint = MaterialTheme.colors.onPrimary
+            tint = if (enabled) MaterialTheme.colors.onPrimary
+                    else MaterialTheme.colors.onSurface
+                        .copy(alpha = ContentAlpha.disabled)
         )
     }
 }
