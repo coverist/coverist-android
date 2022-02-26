@@ -43,6 +43,10 @@ class BookInfoInputViewModel @Inject constructor(
 
     fun editSubGenre(subGenre: String) {
         bookSubGenre = subGenre
+        if(bookTags.isEmpty()) {
+            bookTags.add(bookGenre)
+            bookTags.add(bookSubGenre)
+        }
     }
 
     fun addTag(tag: String) {
@@ -66,7 +70,6 @@ class BookInfoInputViewModel @Inject constructor(
         viewModelScope.launch {
             subGenres = genreRepository.getSubGenres(genre)
         }
-        print(subGenres)
         return subGenres
     }
 
@@ -75,6 +78,7 @@ class BookInfoInputViewModel @Inject constructor(
             0 -> bookTitle != "" && bookAuthor != ""
             1 -> bookGenre != ""
             2 -> bookSubGenre != ""
+            3 -> bookTags.isNotEmpty()
             else -> true
         }
 }

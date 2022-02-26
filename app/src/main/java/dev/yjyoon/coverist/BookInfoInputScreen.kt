@@ -80,8 +80,7 @@ fun QuestionTextBox(text: String) {
                 .padding(4.dp),
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.h6.copy(
-                fontWeight = FontWeight.Bold,
-                color = Color.Black.copy(alpha = 0.80f)
+                fontWeight = FontWeight.Bold
             )
         )
     }
@@ -95,13 +94,12 @@ fun InputContent(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         modifier = modifier.padding(18.dp)
     ) {
         QuestionTextBox(text = stringResource(id = question.questionText))
         Surface(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(top = 22.dp, bottom = 4.dp)
         ) {
             when (question.inputType) {
@@ -131,6 +129,13 @@ fun InputContent(
                         genres = subGenres,
                         selected = viewModel.bookSubGenre,
                         onChange = viewModel::editSubGenre
+                    )
+                }
+                BookInfoInput.Type.Tags -> {
+                    TagsInput(
+                        tags = viewModel.bookTags,
+                        onAdd = viewModel::addTag,
+                        onDelete = viewModel::deleteTag
                     )
                 }
                 else -> {}

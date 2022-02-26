@@ -1,20 +1,33 @@
 package dev.yjyoon.coverist
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Tag
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.yjyoon.coverist.util.SimpleFlowRow
+import dev.yjyoon.coverist.util.TextInputDialog
 
 @Composable
 fun TitleAndAuthorInput(
@@ -23,6 +36,8 @@ fun TitleAndAuthorInput(
     onEditTitle: (String) -> Unit,
     onEditAuthor: (String) -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -33,6 +48,7 @@ fun TitleAndAuthorInput(
             onValueChange = onEditTitle,
             label = { Text("제목") },
             singleLine = true,
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -41,6 +57,7 @@ fun TitleAndAuthorInput(
             onValueChange = onEditAuthor,
             label = { Text("저자") },
             singleLine = true,
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -83,8 +100,106 @@ fun GenreGrid(
     }
 }
 
+@Composable
+fun TagsInput(
+    tags: List<String>,
+    onAdd: (String) -> Unit,
+    onDelete: (String) -> Unit,
+) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    SimpleFlowRow(
+        verticalGap = 8.dp,
+        horizontalGap = 8.dp,
+        alignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(16.dp)
+    ) {
+        for (tag in tags) {
+            TagChip(tag, onDelete)
+        }
+
+        TagAdd(onClick = { showDialog = true })
+    }
+
+    if (showDialog) {
+        TextInputDialog(
+            onDismissRequest = { showDialog = false },
+            textFieldLabel = { Text("태그 입력") },
+            textFieldLeadingIcon = { Icon(Icons.Rounded.Tag,"Tag") },
+            submitButtonText = "추가",
+            onSubmit = onAdd
+        )
+    }
+}
+
+@Composable
+fun TagAdd(onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .width(36.dp)
+            .height(36.dp)
+    ) {
+        Icon(
+            Icons.Rounded.Add,
+            "Add tag.",
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colors.primary,
+                    shape = CircleShape
+                )
+                .padding(8.dp),
+            tint = MaterialTheme.colors.onPrimary
+        )
+    }
+}
+
+@Composable
+fun TagChip(
+    tag: String,
+    onDelete: (String) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .background(MaterialTheme.colors.primary.copy(alpha = 0.12f), CircleShape)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "#$tag",
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colors.primary.copy(alpha = 0.87f),
+            style = MaterialTheme.typography.subtitle1
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        IconButton(
+            onClick = { onDelete(tag) },
+            modifier = Modifier
+                .width(16.dp)
+                .height(16.dp)
+        ) {
+            Icon(
+                Icons.Default.Close,
+                "Delete tag.",
+                modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colors.primary.copy(alpha = 0.2f),
+                        shape = CircleShape
+                    )
+                    .padding(2.dp),
+                tint = MaterialTheme.colors.onPrimary
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun TitleAndAuthorInputPreview() {
-    TitleAndAuthorInput(title = "ㅎㅇ", author = "ㅎㅇ", onEditTitle = {}, onEditAuthor = {})
+fun TagsRowPreview() {
+    TagsInput(
+        tags = listOf("ㅎㅇ", "ㅎㅇㅎㅇ", "ㅎㅇㅎㅇㅎㅇ", "ㅎㅇㅎㅇ", "ㅎㅇ", "ㅎㅇㅎㅇㅎㅇ"),
+        onAdd = {},
+        onDelete = {})
 }
