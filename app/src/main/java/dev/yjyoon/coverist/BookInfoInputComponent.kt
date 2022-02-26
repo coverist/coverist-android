@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.yjyoon.coverist.util.SimpleFlowRow
 import dev.yjyoon.coverist.util.TextInputDialog
 
@@ -105,6 +106,7 @@ fun TagsInput(
     tags: List<String>,
     onAdd: (String) -> Unit,
     onDelete: (String) -> Unit,
+    isInvalid: (String) -> Boolean
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -127,7 +129,8 @@ fun TagsInput(
             textFieldLabel = { Text("태그 입력") },
             textFieldLeadingIcon = { Icon(Icons.Rounded.Tag,"Tag") },
             submitButtonText = "추가",
-            onSubmit = onAdd
+            onSubmit = onAdd,
+            isTextFieldError = isInvalid
         )
     }
 }
@@ -198,8 +201,4 @@ fun TagChip(
 @Preview(showBackground = true)
 @Composable
 fun TagsRowPreview() {
-    TagsInput(
-        tags = listOf("ㅎㅇ", "ㅎㅇㅎㅇ", "ㅎㅇㅎㅇㅎㅇ", "ㅎㅇㅎㅇ", "ㅎㅇ", "ㅎㅇㅎㅇㅎㅇ"),
-        onAdd = {},
-        onDelete = {})
 }

@@ -18,7 +18,8 @@ fun TextInputDialog(
     textFieldLabel: @Composable (() -> Unit)?,
     textFieldLeadingIcon: @Composable (() -> Unit)?,
     submitButtonText: String,
-    onSubmit: (String) -> Unit
+    onSubmit: (String) -> Unit,
+    isTextFieldError: (String) -> Boolean
 ) {
     Dialog(
         onDismissRequest = onDismissRequest
@@ -51,7 +52,8 @@ fun TextInputDialog(
                             onSubmit(text)
                             onDismissRequest()
                         }
-                    )
+                    ),
+                    isError = isTextFieldError(text)
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
@@ -59,7 +61,8 @@ fun TextInputDialog(
                         onSubmit(text)
                         onDismissRequest()
                     },
-                    shape = CircleShape
+                    shape = CircleShape,
+                    enabled = !isTextFieldError(text)
                 ) {
                     Text(submitButtonText)
                 }

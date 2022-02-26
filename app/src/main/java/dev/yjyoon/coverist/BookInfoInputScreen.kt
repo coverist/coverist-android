@@ -135,7 +135,8 @@ fun InputContent(
                     TagsInput(
                         tags = viewModel.bookTags,
                         onAdd = viewModel::addTag,
-                        onDelete = viewModel::deleteTag
+                        onDelete = viewModel::deleteTag,
+                        isInvalid = viewModel::isInvalidTag
                     )
                 }
                 else -> {}

@@ -50,13 +50,19 @@ class BookInfoInputViewModel @Inject constructor(
     }
 
     fun addTag(tag: String) {
-        if (bookTags.contains(tag)) throw TagAlreadyExistsException()
-        bookTags.add(tag)
+        if (bookTags.contains(tag.trim())) throw TagAlreadyExistsException()
+        bookTags.add(tag.trim())
     }
 
     fun deleteTag(tag: String) {
-        if (!bookTags.contains(tag)) throw NonexistantTagException()
-        bookTags.remove(tag)
+        if (!bookTags.contains(tag.trim())) throw NonexistantTagException()
+        bookTags.remove(tag.trim())
+    }
+
+    fun isInvalidTag(tag: String): Boolean {
+        if(tag.trim().isEmpty()) return true
+        if(bookTags.contains(tag.trim())) return true
+        return false
     }
 
     fun loadGenres(): LiveData<List<String>> {
