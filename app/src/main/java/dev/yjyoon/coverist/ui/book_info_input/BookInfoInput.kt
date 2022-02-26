@@ -1,6 +1,7 @@
-package dev.yjyoon.coverist
+package dev.yjyoon.coverist.ui.book_info_input
 
 import androidx.annotation.StringRes
+import dev.yjyoon.coverist.R
 
 sealed class BookInfoInput {
     data class Question(

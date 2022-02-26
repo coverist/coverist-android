@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist
+package dev.yjyoon.coverist.data.remote.model
 
 data class Book(
     var title: String,

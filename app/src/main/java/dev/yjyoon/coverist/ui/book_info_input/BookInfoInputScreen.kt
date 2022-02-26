@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist
+package dev.yjyoon.coverist.ui.book_info_input
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.yjyoon.coverist.BookInfoInput.Companion.bookInfoInputQuestions
+import dev.yjyoon.coverist.ui.book_info_input.BookInfoInput.Companion.bookInfoInputQuestions
 
 @Composable
 fun BookInfoInputScreen(navController: NavController, viewModel: BookInfoInputViewModel) {
