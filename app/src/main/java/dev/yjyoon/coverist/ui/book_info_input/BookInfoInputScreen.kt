@@ -19,26 +19,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.yjyoon.coverist.R
 import dev.yjyoon.coverist.ui.book_info_input.BookInfoInput.Companion.bookInfoInputQuestions
+import dev.yjyoon.coverist.util.QuestionDialog
 
 @Composable
 fun BookInfoInputScreen(navController: NavController, viewModel: BookInfoInputViewModel) {
     val (step, setStep) = remember { mutableStateOf(0) }
+    var showCloseDialog by remember { mutableStateOf(false) }
+
     val question = bookInfoInputQuestions[step]
     val maxStep = bookInfoInputQuestions.size
 
     BackHandler {
         if (step > 0) setStep(step - 1)
         else {
-            navController.navigate("title") {
-                popUpTo("title") { inclusive = true }
-            }
+            showCloseDialog = true
         }
     }
 
     Scaffold(
         topBar = {
-            BookInfoInputTopAppBar(step, maxStep)
+            BookInfoInputTopAppBar(
+                step = step,
+                maxStep = maxStep,
+                onClose = { showCloseDialog = true }
+            )
         },
         content = { innerPadding ->
             InputContent(
@@ -60,6 +66,20 @@ fun BookInfoInputScreen(navController: NavController, viewModel: BookInfoInputVi
             )
         }
     )
+
+    if (showCloseDialog) {
+        QuestionDialog(
+            question = stringResource(R.string.close_book_info_input),
+            onYes = {
+                showCloseDialog = false
+                navController.navigate("title") {
+                    popUpTo("title") { inclusive = true }
+                }
+            },
+            onNo = { showCloseDialog = false },
+            onDismissRequest = { showCloseDialog = false }
+        )
+    }
 }
 
 @Composable
@@ -180,9 +200,11 @@ fun StepProgressBar(step: Int, maxStep: Int) {
 }
 
 @Composable
-fun QuitButton() {
+fun QuitButton(
+    onClick: () -> Unit
+) {
     IconButton(
-        onClick = { },
+        onClick = onClick,
         modifier = Modifier.padding(vertical = 12.dp)
     ) {
         Icon(
@@ -194,7 +216,11 @@ fun QuitButton() {
 }
 
 @Composable
-fun BookInfoInputTopAppBar(step: Int, maxStep: Int) {
+fun BookInfoInputTopAppBar(
+    step: Int,
+    maxStep: Int,
+    onClose: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -222,7 +248,9 @@ fun BookInfoInputTopAppBar(step: Int, maxStep: Int) {
                 maxStep = maxStep,
                 modifier = Modifier.padding(vertical = 12.dp)
             )
-            QuitButton()
+            QuitButton(
+                onClick = onClose
+            )
         }
         StepProgressBar(step = step, maxStep = maxStep)
     }

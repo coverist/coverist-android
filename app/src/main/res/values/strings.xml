@@ -6,4 +6,5 @@
     <string name="book_info_q3">세부 장르를 선택해주세요</string>
     <string name="book_info_q4">태그를 입력해주세요</string>
     <string name="book_info_q5">출판사 이미지를 넣어주세요</string>
+    <string name="close_book_info_input">도서 표지 생성을 그만두시겠습니까?</string>
 </resources>

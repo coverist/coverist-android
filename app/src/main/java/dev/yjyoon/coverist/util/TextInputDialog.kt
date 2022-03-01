@@ -44,7 +44,7 @@ fun TextInputDialog(
                 .width(200.dp)
                 .wrapContentHeight(),
             shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colors.onPrimary
+            color = MaterialTheme.colors.surface
         ) {
             Column(
                 modifier = Modifier.padding(12.dp),
