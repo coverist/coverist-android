@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.yjyoon.coverist.R
+import dev.yjyoon.coverist.data.remote.model.Genre
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
 import dev.yjyoon.coverist.util.SimpleFlowRow
 import dev.yjyoon.coverist.util.TextInputDialog
@@ -74,9 +75,9 @@ fun TitleAndAuthorInput(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GenreGrid(
-    genres: List<String>,
-    selected: String,
-    onChange: (String) -> Unit
+    genres: List<Genre>,
+    selected: Genre?,
+    onChange: (Genre) -> Unit
 ) {
     val (genre, setGenre) = remember { mutableStateOf(selected) }
 
@@ -91,7 +92,7 @@ fun GenreGrid(
                     shape = MaterialTheme.shapes.small,
                     modifier = Modifier.padding(horizontal = 4.dp)
                 ) {
-                    Text(genres[it])
+                    Text(genres[it].text)
                 }
             else
                 OutlinedButton(
@@ -102,7 +103,7 @@ fun GenreGrid(
                     shape = MaterialTheme.shapes.small,
                     modifier = Modifier.padding(horizontal = 4.dp)
                 ) {
-                    Text(genres[it])
+                    Text(genres[it].text)
                 }
         }
     }

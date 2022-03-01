@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.yjyoon.coverist.R
+import dev.yjyoon.coverist.data.remote.model.Genre
 import dev.yjyoon.coverist.ui.book_info_input.BookInfoInput.Companion.bookInfoInputQuestions
 import dev.yjyoon.coverist.util.QuestionDialog
 
@@ -132,8 +133,8 @@ fun InputContent(
                     )
                 }
                 BookInfoInput.Type.Genre -> {
-                    val genres: List<String> by viewModel.loadGenres()
-                        .observeAsState(initial = List(28) { " " })
+                    val genres: List<Genre> by viewModel.loadGenres()
+                        .observeAsState(initial = List(28) { Genre(0,"") })
 
                     GenreGrid(
                         genres = genres,
@@ -142,8 +143,8 @@ fun InputContent(
                     )
                 }
                 BookInfoInput.Type.SubGenre -> {
-                    val subGenres: List<String> by viewModel.loadSubGenres()
-                        .observeAsState(initial = List(28) { " " })
+                    val subGenres: List<Genre> by viewModel.loadSubGenres()
+                        .observeAsState(initial = List(28) { Genre(0,"") })
 
                     GenreGrid(
                         genres = subGenres,
