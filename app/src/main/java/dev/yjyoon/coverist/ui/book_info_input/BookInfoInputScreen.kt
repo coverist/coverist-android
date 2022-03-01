@@ -122,7 +122,7 @@ fun InputContent(
                     )
                 }
                 BookInfoInput.Type.SubGenre -> {
-                    val subGenres: List<String> by viewModel.loadSubGenres(viewModel.bookGenre)
+                    val subGenres: List<String> by viewModel.loadSubGenres()
                         .observeAsState(initial = List(28) { " " })
 
                     GenreGrid(

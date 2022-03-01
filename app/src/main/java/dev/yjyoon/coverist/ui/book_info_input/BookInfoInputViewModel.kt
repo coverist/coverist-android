@@ -77,9 +77,9 @@ class BookInfoInputViewModel @Inject constructor(
         return genres
     }
 
-    fun loadSubGenres(genre: String): LiveData<List<String>> {
+    fun loadSubGenres(): LiveData<List<String>> {
         viewModelScope.launch {
-            subGenres = genreRepository.getSubGenres(genre)
+            subGenres = genreRepository.getSubGenres(bookGenre)
         }
         return subGenres
     }

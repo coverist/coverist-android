@@ -205,6 +205,13 @@ fun TagChip(
     }
 }
 
+@Composable
+fun UploadPublisher(
+    onUpload: (String) -> Unit
+) {
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun TagsRowPreview() {
