@@ -1,5 +1,6 @@
 package dev.yjyoon.coverist.ui.book_info_input
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +25,8 @@ class BookInfoInputViewModel @Inject constructor(
     var bookGenre by mutableStateOf("")
     var bookSubGenre by mutableStateOf("")
     var bookTags = mutableStateListOf<String>()
-    var bookPublisher by mutableStateOf("")
+    var bookPublisher by mutableStateOf<Uri?>(null)
+    var isBookPublisherEmpty by mutableStateOf(false)
 
     lateinit var genres: LiveData<List<String>>
     lateinit var subGenres: LiveData<List<String>>
@@ -84,12 +86,25 @@ class BookInfoInputViewModel @Inject constructor(
         return subGenres
     }
 
+    fun editPublisher(uri: Uri) {
+        bookPublisher = uri
+    }
+
+    fun deletePublisher() {
+        bookPublisher = null
+    }
+
+    fun setPublisherEmpty(empty: Boolean) {
+        isBookPublisherEmpty = empty
+    }
+
     fun isValidateInput(step: Int): Boolean =
         when (step) {
             0 -> bookTitle != "" && bookAuthor != ""
             1 -> bookGenre != ""
             2 -> bookSubGenre != ""
             3 -> bookTags.isNotEmpty()
+            4 -> bookPublisher != null || isBookPublisherEmpty
             else -> true
         }
 }

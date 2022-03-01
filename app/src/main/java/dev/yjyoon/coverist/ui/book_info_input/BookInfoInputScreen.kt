@@ -140,6 +140,14 @@ fun InputContent(
                         isInvalid = viewModel::isInvalidTag
                     )
                 }
+                BookInfoInput.Type.Publisher -> {
+                    UploadPublisherImage(
+                        imageUri = viewModel.bookPublisher,
+                        onUpload = viewModel::editPublisher,
+                        onDelete = viewModel::deletePublisher,
+                        setEmpty = viewModel::setPublisherEmpty
+                    )
+                }
                 else -> {}
             }
         }
