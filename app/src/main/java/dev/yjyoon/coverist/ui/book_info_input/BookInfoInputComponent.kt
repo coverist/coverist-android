@@ -221,7 +221,7 @@ fun TagChip(
 @Composable
 fun UploadPublisherImage(
     imageUri: Uri?,
-    onUpload: (Uri) -> Unit,
+    onUpload: (Uri?) -> Unit,
     onDelete: () -> Unit,
     setEmpty: (Boolean) -> Unit
 ) {
@@ -291,7 +291,7 @@ fun UploadPublisherImage(
                 OutlinedButton(
                     onClick = { launcher.launch("image/*") },
                     enabled = !isEmpty,
-                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 18.dp)
+                    contentPadding = PaddingValues(24.dp)
                 ) {
                     val imageAssetId = R.drawable.ic_undraw_upload_re_pasx
 

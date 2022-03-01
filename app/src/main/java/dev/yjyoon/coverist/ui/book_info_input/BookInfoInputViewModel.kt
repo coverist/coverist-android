@@ -86,7 +86,7 @@ class BookInfoInputViewModel @Inject constructor(
         return subGenres
     }
 
-    fun editPublisher(uri: Uri) {
+    fun editPublisher(uri: Uri?) {
         bookPublisher = uri
     }
 
