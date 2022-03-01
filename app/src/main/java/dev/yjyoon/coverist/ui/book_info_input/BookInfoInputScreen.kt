@@ -70,6 +70,7 @@ fun BookInfoInputScreen(navController: NavController, viewModel: BookInfoInputVi
 
     if (showCloseDialog) {
         QuestionDialog(
+            title = stringResource(R.string.app_name),
             question = stringResource(R.string.close_book_info_input),
             onYes = {
                 showCloseDialog = false
