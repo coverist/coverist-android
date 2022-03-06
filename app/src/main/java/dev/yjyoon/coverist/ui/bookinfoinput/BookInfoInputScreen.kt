@@ -25,7 +25,10 @@ import dev.yjyoon.coverist.ui.bookinfoinput.BookInfoInput.Companion.bookInfoInpu
 import dev.yjyoon.coverist.util.QuestionDialog
 
 @Composable
-fun BookInfoInputScreen(navController: NavController, viewModel: BookInfoInputViewModel) {
+fun BookInfoInputScreen(
+    navController: NavController,
+    viewModel: BookInfoInputViewModel
+) {
     val (step, setStep) = remember { mutableStateOf(0) }
     var showCloseDialog by remember { mutableStateOf(false) }
 
@@ -60,10 +63,14 @@ fun BookInfoInputScreen(navController: NavController, viewModel: BookInfoInputVi
             BookInfoInputBottomBar(
                 showPrevious = step > 0,
                 onPreviousClick = { setStep(step - 1) },
-                enabledNext = viewModel.isValidateInput(step),
+                enabledNext = viewModel.isValidInput(step),
                 onNextClick = { setStep(step + 1) },
                 showDone = step + 1 == maxStep,
-                onDoneClick = {}
+                onDoneClick = {
+                    navController.navigate("show-cover") {
+                        popUpTo("title") { inclusive = true }
+                    }
+                }
             )
         }
     )
@@ -135,7 +142,7 @@ fun InputContent(
                 }
                 BookInfoInput.Type.Genre -> {
                     val genres: List<Genre> by viewModel.loadGenres()
-                        .observeAsState(initial = List(28) { Genre(0,"") })
+                        .observeAsState(initial = List(28) { Genre(0, "") })
 
                     GenreGrid(
                         genres = genres,
@@ -145,7 +152,7 @@ fun InputContent(
                 }
                 BookInfoInput.Type.SubGenre -> {
                     val subGenres: List<Genre> by viewModel.loadSubGenres()
-                        .observeAsState(initial = List(28) { Genre(0,"") })
+                        .observeAsState(initial = List(28) { Genre(0, "") })
 
                     GenreGrid(
                         genres = subGenres,

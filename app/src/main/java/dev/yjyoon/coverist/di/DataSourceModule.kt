@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.yjyoon.coverist.data.remote.api.CoverService
 import dev.yjyoon.coverist.data.remote.api.GenreService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,4 +33,9 @@ class DataSourceModule {
     @Provides
     fun genreService(retrofit: Retrofit) : GenreService =
         retrofit.create(GenreService::class.java)
+
+    @Singleton
+    @Provides
+    fun coverService(retrofit: Retrofit) : CoverService =
+        retrofit.create(CoverService::class.java)
 }

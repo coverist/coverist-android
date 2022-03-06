@@ -96,13 +96,13 @@ class BookInfoInputViewModel @Inject constructor(
         isBookPublisherEmpty = empty
     }
 
-    fun isValidateInput(step: Int): Boolean =
+    fun isValidInput(step: Int): Boolean =
         when (step) {
             0 -> bookTitle != "" && bookAuthor != ""
             1 -> bookGenre != null
             2 -> bookSubGenre != null
             3 -> bookTags.isNotEmpty()
             4 -> bookPublisher != null || isBookPublisherEmpty
-            else -> true
+            else -> false
         }
 }
