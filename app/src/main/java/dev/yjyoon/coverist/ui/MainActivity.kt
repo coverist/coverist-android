@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.yjyoon.coverist.TitleScreen
 import dev.yjyoon.coverist.ui.bookinfoinput.BookInfoInputScreen
+import dev.yjyoon.coverist.ui.showcover.ShowCoverScreen
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
 
 @AndroidEntryPoint
@@ -42,6 +43,9 @@ fun CoveristNavHost(
         }
         composable("book-info-input") {
             BookInfoInputScreen(navController = navController, viewModel = hiltViewModel())
+        }
+        composable("show-cover") {
+            ShowCoverScreen(navController = navController, viewModel = hiltViewModel())
         }
     }
 }
