@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.ui.book_info_input
+package dev.yjyoon.coverist.ui.bookinfoinput
 
 import android.net.Uri
 import androidx.compose.runtime.getValue
@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

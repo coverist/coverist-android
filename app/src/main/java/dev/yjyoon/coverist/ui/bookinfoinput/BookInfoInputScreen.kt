@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.ui.book_info_input
+package dev.yjyoon.coverist.ui.bookinfoinput
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.yjyoon.coverist.R
 import dev.yjyoon.coverist.data.remote.model.Genre
-import dev.yjyoon.coverist.ui.book_info_input.BookInfoInput.Companion.bookInfoInputQuestions
+import dev.yjyoon.coverist.ui.bookinfoinput.BookInfoInput.Companion.bookInfoInputQuestions
 import dev.yjyoon.coverist.util.QuestionDialog
 
 @Composable
