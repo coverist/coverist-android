@@ -51,6 +51,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-util:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
@@ -69,6 +70,12 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.41"
     kapt "com.google.dagger:hilt-android-compiler:2.41"
 
+    // Pager
+    implementation 'com.google.accompanist:accompanist-pager:0.19.0'
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.19.0"
+
+    // Coil
+    implementation 'io.coil-kt:coil-compose:2.0.0-rc01'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
