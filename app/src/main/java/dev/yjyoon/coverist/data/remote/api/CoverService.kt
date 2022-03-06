@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface CoverService {
-    @POST("/book")
+    @POST("book")
     fun generateCover(@Body book: Book): Call<List<Cover>>
 }

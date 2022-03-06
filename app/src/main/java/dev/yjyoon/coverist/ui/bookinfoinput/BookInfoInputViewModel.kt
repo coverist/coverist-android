@@ -1,6 +1,7 @@
 package dev.yjyoon.coverist.ui.bookinfoinput
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -11,14 +12,18 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.yjyoon.coverist.NonexistantTagException
 import dev.yjyoon.coverist.TagAlreadyExistsException
+import dev.yjyoon.coverist.data.remote.model.Book
+import dev.yjyoon.coverist.data.remote.model.Cover
 import dev.yjyoon.coverist.data.remote.model.Genre
+import dev.yjyoon.coverist.repository.CoverRepository
 import dev.yjyoon.coverist.repository.GenreRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BookInfoInputViewModel @Inject constructor(
-    private val genreRepository: GenreRepository
+    private val genreRepository: GenreRepository,
+    private val coverRepository: CoverRepository
 ) : ViewModel() {
 
     var bookTitle by mutableStateOf("")
@@ -31,6 +36,8 @@ class BookInfoInputViewModel @Inject constructor(
 
     private var genres: LiveData<List<Genre>>? = null
     private lateinit var subGenres: LiveData<List<Genre>>
+
+    var covers by mutableStateOf<List<Cover>?>(null)
 
     fun editTitle(title: String) {
         bookTitle = title.trim()
@@ -105,4 +112,19 @@ class BookInfoInputViewModel @Inject constructor(
             4 -> bookPublisher != null || isBookPublisherEmpty
             else -> false
         }
+
+    fun generateCover() {
+        val book = Book(
+            title = bookTitle,
+            author = bookAuthor,
+            genre = bookGenre!!.text,
+            subGenre = bookSubGenre!!.text,
+            tags = bookTags,
+            publisher = bookPublisher?.toString()
+        )
+
+        viewModelScope.launch {
+            covers = coverRepository.generateCover(book)
+        }
+    }
 }

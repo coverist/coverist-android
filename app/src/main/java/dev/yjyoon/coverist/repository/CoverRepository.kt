@@ -12,23 +12,22 @@ import retrofit2.Response
 import javax.inject.Inject
 
 interface CoverRepository {
-    suspend fun generateCover(book: Book) : LiveData<List<Cover>>
+    suspend fun generateCover(book: Book) : List<Cover>
 }
 
 class CoverRepositoryImpl @Inject constructor(
     private val coverService: CoverService
 ) : CoverRepository {
-    override suspend fun generateCover(book: Book): LiveData<List<Cover>> {
-        val covers = MutableLiveData<List<Cover>>()
+    override suspend fun generateCover(book: Book): List<Cover> {
+        var covers = emptyList<Cover>()
 
         coverService.generateCover(book).enqueue(object : Callback<List<Cover>> {
             override fun onResponse(call: Call<List<Cover>>, response: Response<List<Cover>>) {
-                if(response.isSuccessful) covers.value = response.body()
-                else covers.value = emptyList()
+                if(response.isSuccessful) covers = response.body()!!
             }
 
             override fun onFailure(call: Call<List<Cover>>, t: Throwable) {
-                covers.value = emptyList()
+
             }
         })
 
