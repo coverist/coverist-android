@@ -13,8 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.yjyoon.coverist.TitleScreen
-import dev.yjyoon.coverist.ui.bookinfoinput.BookInfoInputScreen
-import dev.yjyoon.coverist.ui.showcover.ShowCoverScreen
+import dev.yjyoon.coverist.ui.cover.generation.input.BookInfoInputScreen
+import dev.yjyoon.coverist.ui.cover.generation.done.ShowCoverScreen
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
 
 @AndroidEntryPoint

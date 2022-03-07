@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.ui.showcover
+package dev.yjyoon.coverist.ui.cover.generation.done
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*

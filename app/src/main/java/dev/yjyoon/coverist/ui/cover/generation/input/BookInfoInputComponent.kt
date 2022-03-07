@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.ui.bookinfoinput
+package dev.yjyoon.coverist.ui.cover.generation.input
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder

@@ -1,7 +1,6 @@
-package dev.yjyoon.coverist.ui.bookinfoinput
+package dev.yjyoon.coverist.ui.cover.generation.input
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,7 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.yjyoon.coverist.NonexistantTagException
+import dev.yjyoon.coverist.NonexistentTagException
 import dev.yjyoon.coverist.TagAlreadyExistsException
 import dev.yjyoon.coverist.data.remote.model.Book
 import dev.yjyoon.coverist.data.remote.model.Cover
@@ -62,7 +61,7 @@ class BookInfoInputViewModel @Inject constructor(
     }
 
     fun deleteTag(tag: String) {
-        if (!bookTags.contains(tag.trim())) throw NonexistantTagException()
+        if (!bookTags.contains(tag.trim())) throw NonexistentTagException()
         bookTags.remove(tag.trim())
     }
 

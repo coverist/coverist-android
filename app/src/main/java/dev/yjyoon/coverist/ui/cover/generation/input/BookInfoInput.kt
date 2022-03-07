@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.ui.bookinfoinput
+package dev.yjyoon.coverist.ui.cover.generation.input
 
 import androidx.annotation.StringRes
 import dev.yjyoon.coverist.R

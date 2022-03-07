@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.ui.showcover
+package dev.yjyoon.coverist.ui.cover.generation.done
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
