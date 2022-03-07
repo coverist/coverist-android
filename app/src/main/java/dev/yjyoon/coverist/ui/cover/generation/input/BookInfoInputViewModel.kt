@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.yjyoon.coverist.NonexistentTagException
-import dev.yjyoon.coverist.TagAlreadyExistsException
+import dev.yjyoon.coverist.exception.NonexistentTagException
+import dev.yjyoon.coverist.exception.TagAlreadyExistsException
 import dev.yjyoon.coverist.data.remote.model.Book
 import dev.yjyoon.coverist.data.remote.model.Cover
 import dev.yjyoon.coverist.data.remote.model.Genre

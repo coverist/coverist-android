@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist
+package dev.yjyoon.coverist.exception
 
 class TagAlreadyExistsException: Exception()
 
