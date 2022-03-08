@@ -26,6 +26,7 @@ import dev.yjyoon.coverist.ui.cover.generation.input.BookInfoInput.Companion.boo
 import dev.yjyoon.coverist.ui.cover.generation.done.ShowCoverScreen
 import dev.yjyoon.coverist.ui.cover.generation.loading.GeneratingScreen
 import dev.yjyoon.coverist.util.QuestionDialog
+import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun BookInfoInputScreen(
@@ -69,10 +70,7 @@ fun BookInfoInputScreen(
                 enabledNext = viewModel.isValidInput(step),
                 onNextClick = { setStep(step + 1) },
                 showDone = step + 1 == maxStep,
-                onDoneClick = {
-                    viewModel.isGenerating(true)
-                    viewModel.generateCover()
-                }
+                onDoneClick = { viewModel.isGenerating = true }
             )
         }
     )
