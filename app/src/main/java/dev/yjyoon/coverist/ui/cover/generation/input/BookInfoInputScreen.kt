@@ -18,18 +18,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.yjyoon.coverist.R
 import dev.yjyoon.coverist.data.remote.model.Genre
+import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverViewModel
 import dev.yjyoon.coverist.ui.cover.generation.input.BookInfoInput.Companion.bookInfoInputQuestions
 import dev.yjyoon.coverist.ui.cover.generation.done.ShowCoverScreen
+import dev.yjyoon.coverist.ui.cover.generation.loading.GeneratingScreen
 import dev.yjyoon.coverist.util.QuestionDialog
 
 @Composable
 fun BookInfoInputScreen(
     navController: NavController,
-    viewModel: BookInfoInputViewModel
+    viewModel: GenerateCoverViewModel
 ) {
     val (step, setStep) = remember { mutableStateOf(0) }
     var showCloseDialog by remember { mutableStateOf(false) }
@@ -44,40 +45,37 @@ fun BookInfoInputScreen(
         }
     }
 
-    if (viewModel.covers == null) {
-        Scaffold(
-            topBar = {
-                BookInfoInputTopAppBar(
-                    step = step,
-                    maxStep = maxStep,
-                    onClose = { showCloseDialog = true }
-                )
-            },
-            content = { innerPadding ->
-                InputContent(
-                    viewModel = viewModel,
-                    question = question,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                )
-            },
-            bottomBar = {
-                BookInfoInputBottomBar(
-                    showPrevious = step > 0,
-                    onPreviousClick = { setStep(step - 1) },
-                    enabledNext = viewModel.isValidInput(step),
-                    onNextClick = { setStep(step + 1) },
-                    showDone = step + 1 == maxStep,
-                    onDoneClick = {
-                        viewModel.generateCover()
-                    }
-                )
-            }
-        )
-    } else {
-        ShowCoverScreen(navController = navController, viewModel = hiltViewModel())
-    }
+    Scaffold(
+        topBar = {
+            BookInfoInputTopAppBar(
+                step = step,
+                maxStep = maxStep,
+                onClose = { showCloseDialog = true }
+            )
+        },
+        content = { innerPadding ->
+            InputContent(
+                viewModel = viewModel,
+                question = question,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            )
+        },
+        bottomBar = {
+            BookInfoInputBottomBar(
+                showPrevious = step > 0,
+                onPreviousClick = { setStep(step - 1) },
+                enabledNext = viewModel.isValidInput(step),
+                onNextClick = { setStep(step + 1) },
+                showDone = step + 1 == maxStep,
+                onDoneClick = {
+                    viewModel.isGenerating(true)
+                    viewModel.generateCover()
+                }
+            )
+        }
+    )
 
     if (showCloseDialog) {
         QuestionDialog(
@@ -121,7 +119,7 @@ fun QuestionTextBox(text: String) {
 
 @Composable
 fun InputContent(
-    viewModel: BookInfoInputViewModel,
+    viewModel: GenerateCoverViewModel,
     question: BookInfoInput.Question,
     modifier: Modifier = Modifier
 ) {
@@ -185,11 +183,6 @@ fun InputContent(
             }
         }
     }
-}
-
-@Composable
-fun Loading() {
-    CircularProgressIndicator(modifier = Modifier.padding(144.dp))
 }
 
 @Composable

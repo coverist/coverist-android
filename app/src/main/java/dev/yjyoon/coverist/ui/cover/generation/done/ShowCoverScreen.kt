@@ -18,7 +18,7 @@ import dev.yjyoon.coverist.util.HorizontalImageCarousel
 @Composable
 fun ShowCoverScreen(
     navController: NavController,
-    viewModel: ShowCoverViewModel
+    coverUrls: List<String>
 ) {
 
     BackHandler {
@@ -39,7 +39,7 @@ fun ShowCoverScreen(
                 .padding(innerPadding)
         ) {
             ShowCoverTitle()
-            ShowCoverContent()
+            ShowCoverContent(coverUrls)
         }
     }
 }
@@ -92,12 +92,11 @@ fun ConfirmButton(
 }
 
 @Composable
-fun ShowCoverContent(modifier: Modifier = Modifier) {
-    val list = listOf(
-        "", "", ""
-    )
+fun ShowCoverContent(
+    coverUrls: List<String>,
+    modifier: Modifier = Modifier) {
     HorizontalImageCarousel(
-        imageUrlList = list,
+        imageUrls = coverUrls,
         aspectRatio = 3 / 4f
     )
 }

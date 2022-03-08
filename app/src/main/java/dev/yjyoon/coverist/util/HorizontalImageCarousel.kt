@@ -16,14 +16,14 @@ import kotlin.math.absoluteValue
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HorizontalImageCarousel(
-    imageUrlList: List<String>,
+    imageUrls: List<String>,
     aspectRatio: Float,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState()
 
         HorizontalPager(
-            count = imageUrlList.size,
+            count = imageUrls.size,
             state = pagerState,
             // Add 32.dp horizontal padding to 'center' the pages
             contentPadding = PaddingValues(horizontal = 32.dp),
@@ -58,7 +58,7 @@ fun HorizontalImageCarousel(
                 elevation = 7.dp
             ) {
                 AsyncImage(
-                    model = imageUrlList[page],
+                    model = imageUrls[page],
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier.fillMaxWidth()

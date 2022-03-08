@@ -1,10 +1,7 @@
-package dev.yjyoon.coverist.ui.cover.generation.input
+package dev.yjyoon.coverist.ui.cover.generation
 
 import android.net.Uri
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BookInfoInputViewModel @Inject constructor(
+class GenerateCoverViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
     private val coverRepository: CoverRepository
 ) : ViewModel() {
@@ -37,6 +34,7 @@ class BookInfoInputViewModel @Inject constructor(
     private lateinit var subGenres: LiveData<List<Genre>>
 
     var covers by mutableStateOf<List<Cover>?>(null)
+    var isGenerating by mutableStateOf(false)
 
     fun editTitle(title: String) {
         bookTitle = title.trim()
@@ -125,5 +123,9 @@ class BookInfoInputViewModel @Inject constructor(
         viewModelScope.launch {
             covers = coverRepository.generateCover(book)
         }
+    }
+
+    fun isGenerating(opt: Boolean) {
+        isGenerating = opt
     }
 }

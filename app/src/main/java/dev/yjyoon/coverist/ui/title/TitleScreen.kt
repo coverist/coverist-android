@@ -16,7 +16,7 @@ fun TitleScreen(navController: NavController) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate("book-info-input") },
+                onClick = { navController.navigate("cover-generation") },
                 backgroundColor = MaterialTheme.colors.primary,
                 contentColor = MaterialTheme.colors.onPrimary
             ) {
