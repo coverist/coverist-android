@@ -3,6 +3,7 @@ package dev.yjyoon.coverist.ui.cover.generation
 import android.net.Uri
 import androidx.compose.runtime.*
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,10 +31,6 @@ class GenerateCoverViewModel @Inject constructor(
     var bookPublisher by mutableStateOf<Uri?>(null)
     var isBookPublisherEmpty by mutableStateOf(false)
 
-    private var genres: LiveData<List<Genre>>? = null
-    private lateinit var subGenres: LiveData<List<Genre>>
-
-    var covers by mutableStateOf<List<Cover>?>(null)
     var isGenerating by mutableStateOf(false)
 
     fun editTitle(title: String) {
@@ -74,7 +71,8 @@ class GenerateCoverViewModel @Inject constructor(
     }
 
     fun loadGenres(): LiveData<List<Genre>> {
-        if (genres != null) return genres!!
+        lateinit var genres: LiveData<List<Genre>>
+
         viewModelScope.launch {
             genres = genreRepository.getGenres()
         }
@@ -82,6 +80,8 @@ class GenerateCoverViewModel @Inject constructor(
     }
 
     fun loadSubGenres(): LiveData<List<Genre>> {
+        lateinit var subGenres: LiveData<List<Genre>>
+
         viewModelScope.launch {
             subGenres = genreRepository.getSubGenres(bookGenre!!.id)
         }
@@ -110,7 +110,9 @@ class GenerateCoverViewModel @Inject constructor(
             else -> false
         }
 
-    fun generateCover() {
+    fun generateCover(): LiveData<List<Cover>> {
+        lateinit var covers: LiveData<List<Cover>>
+
         val book = Book(
             title = bookTitle,
             author = bookAuthor,
@@ -123,9 +125,7 @@ class GenerateCoverViewModel @Inject constructor(
         viewModelScope.launch {
             covers = coverRepository.generateCover(book)
         }
-    }
 
-    fun isGenerating(opt: Boolean) {
-        isGenerating = opt
+        return covers
     }
 }
