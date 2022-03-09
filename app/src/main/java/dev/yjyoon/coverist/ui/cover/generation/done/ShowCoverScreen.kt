@@ -23,7 +23,7 @@ fun ShowCoverScreen(
 
     BackHandler {
         navController.navigate("title") {
-            popUpTo("show-cover") { inclusive = true }
+            popUpTo("title") { inclusive = true }
         }
     }
 
@@ -55,7 +55,7 @@ fun ShowCoverTitle(modifier: Modifier = Modifier) {
     ) {
         Text(
             "새로운 표지가 탄생했어요!",
-            style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 18.dp)
         )
@@ -75,7 +75,7 @@ fun ConfirmButton(
         Button(
             onClick = {
                 navController.navigate("title") {
-                    popUpTo("show-cover") { inclusive = true }
+                    popUpTo("title") { inclusive = true }
                 }
             },
             colors = ButtonDefaults.buttonColors(
