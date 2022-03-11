@@ -77,6 +77,9 @@ dependencies {
     // Coil
     implementation 'io.coil-kt:coil-compose:2.0.0-rc01'
 
+    // Landscapist-Glide
+    implementation "com.github.skydoves:landscapist-glide:1.4.9"
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
