@@ -1,7 +1,9 @@
 package dev.yjyoon.coverist.ui.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -9,8 +11,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import coil.compose.AsyncImage
 import com.google.accompanist.pager.*
+import com.skydoves.landscapist.CircularReveal
+import com.skydoves.landscapist.ShimmerParams
+import com.skydoves.landscapist.glide.GlideImage
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
@@ -59,11 +63,18 @@ fun HorizontalImageCarousel(
                     .aspectRatio(aspectRatio),
                 elevation = 7.dp
             ) {
-                AsyncImage(
-                    model = imageUrls[page],
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
+                GlideImage(
+                    imageModel = imageUrls[page],
+                    contentScale = ContentScale.Crop,
+                    circularReveal = CircularReveal(duration = 1000),
+                    shimmerParams = ShimmerParams(
+                        baseColor = MaterialTheme.colors.primary,
+                        highlightColor = MaterialTheme.colors.background,
+                        durationMillis = 500,
+                        dropOff = 0.65f,
+                        tilt = 20f
+                    ),
+                    modifier = Modifier.background(MaterialTheme.colors.primary)
                 )
             }
         }
