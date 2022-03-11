@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.util
+package dev.yjyoon.coverist.ui.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,7 +52,7 @@ fun SimpleFlowRow(
         var y = 0
 
         for (row in rows) {
-            var x = when(alignment) {
+            var x = when (alignment) {
                 Alignment.Start -> 0
                 Alignment.CenterHorizontally -> (coercedWidth - row.width) / 2
                 Alignment.End -> coercedWidth - row.width
