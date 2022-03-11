@@ -1,6 +1,5 @@
-package dev.yjyoon.coverist.util
+package dev.yjyoon.coverist.ui.common
 
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -64,7 +63,7 @@ fun TextInputDialog(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if(!isTextFieldError(text)) {
+                            if (!isTextFieldError(text)) {
                                 onSubmit(text)
                                 onDismissRequest()
                                 keyboardController?.hide()

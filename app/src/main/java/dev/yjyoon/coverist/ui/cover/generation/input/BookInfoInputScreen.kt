@@ -21,12 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.yjyoon.coverist.R
 import dev.yjyoon.coverist.data.remote.model.Genre
+import dev.yjyoon.coverist.ui.common.QuestionDialog
 import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverViewModel
 import dev.yjyoon.coverist.ui.cover.generation.input.BookInfoInput.Companion.bookInfoInputQuestions
-import dev.yjyoon.coverist.ui.cover.generation.done.ShowCoverScreen
-import dev.yjyoon.coverist.ui.cover.generation.loading.GeneratingScreen
-import dev.yjyoon.coverist.util.QuestionDialog
-import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun BookInfoInputScreen(

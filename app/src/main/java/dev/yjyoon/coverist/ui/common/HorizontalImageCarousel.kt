@@ -1,4 +1,4 @@
-package dev.yjyoon.coverist.util
+package dev.yjyoon.coverist.ui.common
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -27,7 +27,9 @@ fun HorizontalImageCarousel(
             state = pagerState,
             // Add 32.dp horizontal padding to 'center' the pages
             contentPadding = PaddingValues(horizontal = 32.dp),
-            modifier = Modifier.weight(1f).fillMaxWidth()
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
         ) { page ->
             Card(
                 Modifier

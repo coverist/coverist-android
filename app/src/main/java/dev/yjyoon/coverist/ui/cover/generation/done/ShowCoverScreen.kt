@@ -12,8 +12,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.yjyoon.coverist.ui.common.HorizontalImageCarousel
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
-import dev.yjyoon.coverist.util.HorizontalImageCarousel
 
 @Composable
 fun ShowCoverScreen(
@@ -94,7 +94,8 @@ fun ConfirmButton(
 @Composable
 fun ShowCoverContent(
     coverUrls: List<String>,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     HorizontalImageCarousel(
         imageUrls = coverUrls,
         aspectRatio = 3 / 4f

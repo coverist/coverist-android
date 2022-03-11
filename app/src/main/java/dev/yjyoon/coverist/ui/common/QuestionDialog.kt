@@ -1,8 +1,8 @@
-package dev.yjyoon.coverist.util
+package dev.yjyoon.coverist.ui.common
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +32,10 @@ fun QuestionDialog(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(title, style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
+                Text(
+                    title,
+                    style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold)
+                )
                 Spacer(modifier = modifier.height(18.dp))
                 Text(question)
                 Spacer(modifier = modifier.height(18.dp))
@@ -63,6 +66,11 @@ fun QuestionDialog(
 @Composable
 fun QuestionDialogPreview() {
     CoveristTheme {
-        QuestionDialog(title = "커버리스트", question = "도서 표지 생성을 그만둘까요?", onYes = {}, onNo = {}, onDismissRequest = {})
+        QuestionDialog(
+            title = "커버리스트",
+            question = "도서 표지 생성을 그만둘까요?",
+            onYes = {},
+            onNo = {},
+            onDismissRequest = {})
     }
 }

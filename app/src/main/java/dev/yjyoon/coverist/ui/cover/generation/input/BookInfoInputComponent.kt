@@ -34,9 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.yjyoon.coverist.R
 import dev.yjyoon.coverist.data.remote.model.Genre
+import dev.yjyoon.coverist.ui.common.SimpleFlowRow
+import dev.yjyoon.coverist.ui.common.TextInputDialog
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
-import dev.yjyoon.coverist.util.SimpleFlowRow
-import dev.yjyoon.coverist.util.TextInputDialog
 
 @Composable
 fun TitleAndAuthorInput(
