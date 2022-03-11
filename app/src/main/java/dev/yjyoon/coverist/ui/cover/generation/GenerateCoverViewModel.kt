@@ -1,17 +1,20 @@
 package dev.yjyoon.coverist.ui.cover.generation
 
+import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.yjyoon.coverist.exception.NonexistentTagException
-import dev.yjyoon.coverist.exception.TagAlreadyExistsException
 import dev.yjyoon.coverist.data.remote.model.Book
 import dev.yjyoon.coverist.data.remote.model.Cover
 import dev.yjyoon.coverist.data.remote.model.Genre
+import dev.yjyoon.coverist.exception.NonexistentTagException
+import dev.yjyoon.coverist.exception.TagAlreadyExistsException
 import dev.yjyoon.coverist.repository.CoverRepository
 import dev.yjyoon.coverist.repository.GenreRepository
 import kotlinx.coroutines.launch
@@ -31,7 +34,12 @@ class GenerateCoverViewModel @Inject constructor(
     var bookPublisher by mutableStateOf<Uri?>(null)
     var isBookPublisherEmpty by mutableStateOf(false)
 
+    private var genres: LiveData<List<Genre>>? = null
+    private var subGenres: LiveData<List<Genre>>? = null
+
     var isGenerating by mutableStateOf(false)
+    private var covers: LiveData<List<Cover>>? = null
+
 
     fun editTitle(title: String) {
         bookTitle = title.trim()
@@ -44,6 +52,7 @@ class GenerateCoverViewModel @Inject constructor(
     fun editGenre(genre: Genre) {
         bookGenre = genre
         bookSubGenre = null
+        subGenres = null
     }
 
     fun editSubGenre(subGenre: Genre) {
@@ -61,8 +70,8 @@ class GenerateCoverViewModel @Inject constructor(
     }
 
     fun isInvalidTag(tag: String): Boolean {
-        if(tag.trim().isEmpty()) return true
-        if(bookTags.contains(tag.trim())) return true
+        if (tag.trim().isEmpty()) return true
+        if (bookTags.contains(tag.trim())) return true
         return false
     }
 
@@ -71,21 +80,23 @@ class GenerateCoverViewModel @Inject constructor(
     }
 
     fun loadGenres(): LiveData<List<Genre>> {
-        lateinit var genres: LiveData<List<Genre>>
+        if (genres != null) return genres!!
 
         viewModelScope.launch {
             genres = genreRepository.getGenres()
         }
+
         return genres!!
     }
 
     fun loadSubGenres(): LiveData<List<Genre>> {
-        lateinit var subGenres: LiveData<List<Genre>>
+        if (subGenres != null) return subGenres!!
 
         viewModelScope.launch {
             subGenres = genreRepository.getSubGenres(bookGenre!!.id)
         }
-        return subGenres
+
+        return subGenres!!
     }
 
     fun editPublisher(uri: Uri?) {
@@ -110,8 +121,8 @@ class GenerateCoverViewModel @Inject constructor(
             else -> false
         }
 
-    fun generateCover(): LiveData<List<Cover>> {
-        lateinit var covers: LiveData<List<Cover>>
+    fun generateCover(context: Context): LiveData<List<Cover>> {
+        if (covers != null) return covers!!
 
         val book = Book(
             title = bookTitle,
@@ -119,13 +130,13 @@ class GenerateCoverViewModel @Inject constructor(
             genre = bookGenre!!.text,
             subGenre = bookSubGenre!!.text,
             tags = bookTags,
-            publisher = bookPublisher?.toString()
+            publisher = bookPublisher
         )
 
         viewModelScope.launch {
-            covers = coverRepository.generateCover(book)
+            covers = coverRepository.generateCover(context, book)
         }
 
-        return covers
+        return covers!!
     }
 }
