@@ -1,6 +1,7 @@
 package dev.yjyoon.coverist.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dev.yjyoon.coverist.data.remote.api.CoverService
@@ -41,6 +42,7 @@ class CoverRepositoryImpl @Inject constructor(
                 }
 
                 override fun onFailure(call: Call<List<Cover>>, t: Throwable) {
+                    Log.d("cover-generation-fail", t.message + "\n" + t.stackTrace)
                     throw CoverGenerationFailException()
                 }
             })
