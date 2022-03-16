@@ -13,7 +13,8 @@ interface CoverService {
     @Multipart
     @POST("book")
     fun generateCover(
-        @PartMap bookInfo: MutableMap<String, RequestBody>, // Kotlin의 경우 Map일 경우 동작하지 않고 HashMap 또는 MutableMap 으로 해주어야 한다.
+        // Kotlin의 경우 @PartMap 사용 시 Map으로는 동작하지 않고 HashMap 또는 MutableMap 으로 해주어야 한다.
+        @PartMap bookInfo: MutableMap<String, RequestBody>,
         @Part publisherImage: MultipartBody.Part?
     ): Call<List<Cover>>
 }
