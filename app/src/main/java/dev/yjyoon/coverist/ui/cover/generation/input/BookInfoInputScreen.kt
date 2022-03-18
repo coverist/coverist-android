@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +31,8 @@ fun BookInfoInputScreen(
     navController: NavController,
     viewModel: GenerateCoverViewModel
 ) {
+    val context = LocalContext.current
+
     val (step, setStep) = remember { mutableStateOf(0) }
     var showCloseDialog by remember { mutableStateOf(false) }
 
@@ -67,7 +70,7 @@ fun BookInfoInputScreen(
                 enabledNext = viewModel.isValidInput(step),
                 onNextClick = { setStep(step + 1) },
                 showDone = step + 1 == maxStep,
-                onDoneClick = { viewModel.isGenerating = true }
+                onDoneClick = { viewModel.generateCover(context) }
             )
         }
     )

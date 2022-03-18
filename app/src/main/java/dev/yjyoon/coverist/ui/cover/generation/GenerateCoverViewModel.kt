@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +18,17 @@ import dev.yjyoon.coverist.exception.NonexistentTagException
 import dev.yjyoon.coverist.exception.TagAlreadyExistsException
 import dev.yjyoon.coverist.repository.CoverRepository
 import dev.yjyoon.coverist.repository.GenreRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+sealed class UiState {
+    object Input : UiState()
+    object Generate : UiState()
+    object Show : UiState()
+    object Error : UiState()
+}
 
 @HiltViewModel
 class GenerateCoverViewModel @Inject constructor(
@@ -26,6 +36,14 @@ class GenerateCoverViewModel @Inject constructor(
     private val coverRepository: CoverRepository
 ) : ViewModel() {
 
+    private var _uiState by mutableStateOf<UiState>(UiState.Input)
+    val uiState: UiState
+        get() = _uiState
+
+    private val _covers = MutableLiveData<List<Cover>>(null)
+    val covers: LiveData<List<Cover>>
+        get() = _covers
+    
     var bookTitle by mutableStateOf("")
     var bookAuthor by mutableStateOf("")
     var bookGenre by mutableStateOf<Genre?>(null)
@@ -36,10 +54,6 @@ class GenerateCoverViewModel @Inject constructor(
 
     private var genres: LiveData<List<Genre>>? = null
     private var subGenres: LiveData<List<Genre>>? = null
-
-    var isGenerating by mutableStateOf(false)
-    private var covers: LiveData<List<Cover>>? = null
-
 
     fun editTitle(title: String) {
         bookTitle = title.trim()
@@ -76,7 +90,7 @@ class GenerateCoverViewModel @Inject constructor(
     }
 
     fun isNotFullTags(): Boolean {
-        return bookTags.size < 10
+        return bookTags.size < 5
     }
 
     fun loadGenres(): LiveData<List<Genre>> {
@@ -121,8 +135,8 @@ class GenerateCoverViewModel @Inject constructor(
             else -> false
         }
 
-    fun generateCover(context: Context): LiveData<List<Cover>> {
-        if (covers != null) return covers!!
+    fun generateCover(context: Context) {
+        _uiState = UiState.Generate
 
         val book = Book(
             title = bookTitle,
@@ -134,9 +148,13 @@ class GenerateCoverViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            covers = coverRepository.generateCover(context, book)
+            val response = coverRepository.generateCover(context, book)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _covers.value = response.body()
+                    _uiState = UiState.Show
+                }
+            }
         }
-
-        return covers!!
     }
 }
