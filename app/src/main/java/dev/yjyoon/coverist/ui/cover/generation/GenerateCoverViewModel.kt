@@ -6,10 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.yjyoon.coverist.data.remote.model.Book
 import dev.yjyoon.coverist.data.remote.model.Cover
@@ -40,14 +37,11 @@ class GenerateCoverViewModel @Inject constructor(
     val uiState: UiState
         get() = _uiState
 
-    lateinit var genres: LiveData<List<Genre>>
-    var subGenres: LiveData<List<Genre>>? = null
-
-    init {
-        viewModelScope.launch {
-            genres = genreRepository.getGenres().asLiveData()
-        }
+    val genres: LiveData<List<Genre>> = liveData {
+        emit(genreRepository.getGenres())
     }
+
+    var subGenres: LiveData<List<Genre>>? = null
 
     var bookTitle by mutableStateOf("")
     var bookAuthor by mutableStateOf("")
