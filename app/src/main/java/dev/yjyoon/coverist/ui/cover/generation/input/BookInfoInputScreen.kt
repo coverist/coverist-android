@@ -141,18 +141,19 @@ fun InputContent(
                     )
                 }
                 BookInfoInput.Type.Genre -> {
-                    val genres: List<Genre> by viewModel.loadGenres()
-                        .observeAsState(initial = List(28) { Genre(0, "") })
+                    val genres = viewModel.genres.observeAsState(
+                        initial = List(28) { Genre(-1, "") }
+                    )
 
                     GenreGrid(
-                        genres = genres,
+                        genres = genres.value,
                         selected = viewModel.bookGenre,
                         onChange = viewModel::editGenre
                     )
                 }
                 BookInfoInput.Type.SubGenre -> {
                     val subGenres: List<Genre> by viewModel.loadSubGenres()
-                        .observeAsState(initial = List(28) { Genre(0, "") })
+                        .observeAsState(initial = List(28) { Genre(-1, "") })
 
                     GenreGrid(
                         genres = subGenres,

@@ -24,7 +24,7 @@ fun GenerateCoverScreen(
         UiState.Show -> {
             ShowCoverScreen(
                 navController = navController,
-                coverUrls = viewModel.covers.value!!.map { it.url }
+                coverUrls = viewModel.covers.map { it.url }
             )
         }
         UiState.Error -> {

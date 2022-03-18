@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.yjyoon.coverist.data.remote.model.Book
@@ -40,10 +40,15 @@ class GenerateCoverViewModel @Inject constructor(
     val uiState: UiState
         get() = _uiState
 
-    private val _covers = MutableLiveData<List<Cover>>(null)
-    val covers: LiveData<List<Cover>>
-        get() = _covers
-    
+    lateinit var genres: LiveData<List<Genre>>
+    var subGenres: LiveData<List<Genre>>? = null
+
+    init {
+        viewModelScope.launch {
+            genres = genreRepository.getGenres().asLiveData()
+        }
+    }
+
     var bookTitle by mutableStateOf("")
     var bookAuthor by mutableStateOf("")
     var bookGenre by mutableStateOf<Genre?>(null)
@@ -52,8 +57,7 @@ class GenerateCoverViewModel @Inject constructor(
     var bookPublisher by mutableStateOf<Uri?>(null)
     var isBookPublisherEmpty by mutableStateOf(false)
 
-    private var genres: LiveData<List<Genre>>? = null
-    private var subGenres: LiveData<List<Genre>>? = null
+    lateinit var covers: List<Cover>
 
     fun editTitle(title: String) {
         bookTitle = title.trim()
@@ -71,6 +75,16 @@ class GenerateCoverViewModel @Inject constructor(
 
     fun editSubGenre(subGenre: Genre) {
         bookSubGenre = subGenre
+    }
+
+    fun loadSubGenres(): LiveData<List<Genre>> {
+        if (subGenres != null) return subGenres!!
+
+        viewModelScope.launch {
+            subGenres = genreRepository.getSubGenres(bookGenre!!.id).asLiveData()
+        }
+
+        return subGenres!!
     }
 
     fun addTag(tag: String) {
@@ -91,26 +105,6 @@ class GenerateCoverViewModel @Inject constructor(
 
     fun isNotFullTags(): Boolean {
         return bookTags.size < 5
-    }
-
-    fun loadGenres(): LiveData<List<Genre>> {
-        if (genres != null) return genres!!
-
-        viewModelScope.launch {
-            genres = genreRepository.getGenres()
-        }
-
-        return genres!!
-    }
-
-    fun loadSubGenres(): LiveData<List<Genre>> {
-        if (subGenres != null) return subGenres!!
-
-        viewModelScope.launch {
-            subGenres = genreRepository.getSubGenres(bookGenre!!.id)
-        }
-
-        return subGenres!!
     }
 
     fun editPublisher(uri: Uri?) {
@@ -151,7 +145,7 @@ class GenerateCoverViewModel @Inject constructor(
             val response = coverRepository.generateCover(context, book)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-                    _covers.value = response.body()
+                    covers = response.body()!!
                     _uiState = UiState.Show
                 }
             }
