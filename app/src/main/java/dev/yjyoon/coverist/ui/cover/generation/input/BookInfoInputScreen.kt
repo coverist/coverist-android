@@ -141,12 +141,12 @@ fun InputContent(
                     )
                 }
                 BookInfoInput.Type.Genre -> {
-                    val genres = viewModel.genres.observeAsState(
+                    val genres by viewModel.genres.observeAsState(
                         initial = List(28) { Genre(-1, "") }
                     )
 
                     GenreGrid(
-                        genres = genres.value,
+                        genres = genres,
                         selected = viewModel.bookGenre,
                         onChange = viewModel::editGenre
                     )
