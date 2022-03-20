@@ -1,8 +1,11 @@
 package dev.yjyoon.coverist.ui.bookshelf
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -38,127 +41,161 @@ fun BookShelfDetail(
         sheetPeekHeight = (configuration.screenHeightDp / 1.95).dp,
         scaffoldState = scaffoldState,
         sheetContent = {
-            Column(
-                modifier = Modifier.padding(18.dp),
-                verticalArrangement = Arrangement.spacedBy(3.dp)
-            ) {
-                Text(
-                    "마지막 벚꽃이 질 때",
-                    style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+            Column {
+                BookInfo(
+                    title = "마지막 벚꽃이 질 때",
+                    author = "윤여준",
+                    genre = "시/에세이",
+                    subGenre = "테마에세이",
+                    tags = listOf("광운대", "참빛설계", "커버리스트")
                 )
-                Text("윤여준 저", color = Color.DarkGray)
-                Text("소설 | 연애", color = Color.Gray)
-                Spacer(Modifier.height(2.dp))
-                SimpleFlowRow(
-                    verticalGap = 6.dp,
-                    horizontalGap = 4.dp,
-                    modifier = Modifier.padding(vertical = 2.dp)
-                ) {
-                    for (i in 1..3) {
-                        TagChip(
-                            tag = "안드로이드",
-                            color = MaterialTheme.colors.primary,
-                            textStyle = MaterialTheme.typography.caption,
-                            contentPadding = PaddingValues(
-                                horizontal = 8.dp,
-                                vertical = 6.dp
-                            ),
-                            deletable = false
-                        )
-                    }
-                }
-                Divider(Modifier.padding(vertical = 8.dp))
-                Text(
-                    "이 책의 다른 표지",
-                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
-                )
+                Divider()
+
                 Spacer(Modifier.height(4.dp))
-                Row(
-                    modifier = Modifier.height(128.dp)
-                ) {
-                    Card(
-
-                        shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)),
-                        modifier = Modifier.clickable { }
-                    ) {
-                        AsyncImage(
-                            model = "https://miricanvas.zendesk.com/hc/article_attachments/900002704543/_____________1_.png",
-                            contentDescription = null
-                        )
-                    }
-                    Spacer(Modifier.width(12.dp))
-                    Card(
-
-                        shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)),
-                        modifier = Modifier.clickable { }
-                    ) {
-                        AsyncImage(
-                            model = "https://miricanvas.zendesk.com/hc/article_attachments/900002704543/_____________1_.png",
-                            contentDescription = null
-                        )
-                    }
-                    Spacer(Modifier.width(12.dp))
-                    Card(
-
-                        shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)),
-                        modifier = Modifier.clickable { }
-                    ) {
-                        AsyncImage(
-                            model = "https://miricanvas.zendesk.com/hc/article_attachments/900002704543/_____________1_.png",
-                            contentDescription = null
-                        )
-                    }
-                }
+                OtherCovers(coverUrls = List(5) { "https://miricanvas.zendesk.com/hc/article_attachments/900002704543/_____________1_.png" })
                 Divider(Modifier.padding(vertical = 8.dp))
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    onClick = {}
-                ) {
-                    Text(
-                        "이 책으로 새로운 표지 만들기",
-                        style = MaterialTheme.typography.subtitle1
-                    )
-                }
+                GenerateButton(onClick = {})
             }
         }
     ) {
+        CoverGraphic(
+            configuration = configuration,
+            coverUrl = "https://image.yes24.com/goods/89990069/XL"
+        )
+    }
+}
+
+@Composable
+fun CoverGraphic(
+    configuration: Configuration,
+    coverUrl: String
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        AsyncImage(
+            model = coverUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            colorFilter = ColorFilter.tint(
+                color = Color.Black.copy(alpha = 0.25f),
+                blendMode = BlendMode.Darken
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height((configuration.screenWidthDp * 1.1).dp)
+                .blur(32.dp)
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(configuration.screenWidthDp.dp)
         ) {
-            AsyncImage(
-                model = "https://image.yes24.com/goods/89990069/XL",
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                colorFilter = ColorFilter.tint(
-                    color = Color.Black.copy(alpha = 0.25f),
-                    blendMode = BlendMode.Darken
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height((configuration.screenWidthDp * 1.1).dp)
-                    .blur(32.dp)
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(configuration.screenWidthDp.dp)
+            Card(
+                elevation = 24.dp,
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.align(Alignment.Center)
             ) {
+                AsyncImage(
+                    model = coverUrl,
+                    contentDescription = null,
+                    modifier = Modifier.width((configuration.screenWidthDp / 2).dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BookInfo(
+    title: String,
+    author: String,
+    genre: String,
+    subGenre: String,
+    tags: List<String>
+) {
+    Column(
+        modifier = Modifier.padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(3.dp)
+    ) {
+        Text(
+            title,
+            style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text("$author 저", color = Color.DarkGray)
+        Text("$genre | $subGenre", color = Color.Gray)
+        Spacer(Modifier.height(2.dp))
+        SimpleFlowRow(
+            verticalGap = 6.dp,
+            horizontalGap = 4.dp,
+            modifier = Modifier.padding(vertical = 2.dp)
+        ) {
+            tags.map {
+                TagChip(
+                    tag = it,
+                    color = MaterialTheme.colors.primary,
+                    textStyle = MaterialTheme.typography.caption,
+                    contentPadding = PaddingValues(
+                        horizontal = 8.dp,
+                        vertical = 6.dp
+                    ),
+                    deletable = false
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun OtherCovers(
+    coverUrls: List<String>
+) {
+    Column(
+        modifier = Modifier.padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(3.dp)
+    ) {
+        Text(
+            "이 책의 다른 표지",
+            style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+        )
+        Spacer(Modifier.height(8.dp))
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(18.dp)
+        ) {
+            items(coverUrls.size) { index ->
                 Card(
-                    elevation = 24.dp,
-                    shape = MaterialTheme.shapes.small.copy(CornerSize(8.dp)),
-                    modifier = Modifier.align(Alignment.Center)
+                    shape = RoundedCornerShape(4.dp),
+                    modifier = Modifier.clickable { },
+                    elevation = 2.dp
                 ) {
                     AsyncImage(
-                        model = "https://image.yes24.com/goods/89990069/XL",
+                        model = coverUrls[index],
                         contentDescription = null,
-                        modifier = Modifier.width((configuration.screenWidthDp / 2).dp)
+                        modifier = Modifier.width(108.dp),
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun GenerateButton(
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = Modifier
+            .padding(18.dp)
+            .fillMaxWidth(),
+        onClick = onClick,
+        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 20.dp)
+    ) {
+        Text(
+            "이 책으로 새로운 표지 만들기",
+            style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold)
+        )
     }
 }
