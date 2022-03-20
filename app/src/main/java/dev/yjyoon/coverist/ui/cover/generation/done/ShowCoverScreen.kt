@@ -98,7 +98,7 @@ fun ShowCoverContent(
 ) {
     HorizontalImageCarousel(
         imageUrls = coverUrls,
-        aspectRatio = 3 / 4f
+        aspectRatio = 2 / 3f
     )
 }
 
