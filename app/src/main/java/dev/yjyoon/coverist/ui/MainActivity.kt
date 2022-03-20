@@ -12,9 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.yjyoon.coverist.ui.title.TitleScreen
+import dev.yjyoon.coverist.ui.bookshelf.BookShelfDetail
 import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverScreen
 import dev.yjyoon.coverist.ui.theme.CoveristTheme
+import dev.yjyoon.coverist.ui.title.TitleScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -36,12 +37,18 @@ fun CoveristNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    NavHost(navController = navController, startDestination = "title", modifier = modifier) {
+    NavHost(
+        navController = navController,
+        startDestination = "title"
+    ) {
         composable("title") {
             TitleScreen(navController = navController)
         }
         composable("cover-generation") {
             GenerateCoverScreen(navController = navController, viewModel = hiltViewModel())
+        }
+        composable("bookshelf-detail") {
+            BookShelfDetail()
         }
     }
 }
