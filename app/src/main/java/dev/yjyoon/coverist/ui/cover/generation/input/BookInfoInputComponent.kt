@@ -24,11 +24,13 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -126,7 +128,7 @@ fun TagsInput(
         modifier = Modifier.padding(16.dp)
     ) {
         for (tag in tags) {
-            TagChip(tag, onDelete)
+            TagChip(tag = tag, onDelete = onDelete)
         }
 
         TagAdd(
@@ -181,12 +183,16 @@ fun TagAdd(
 @Composable
 fun TagChip(
     tag: String,
-    onDelete: (String) -> Unit
+    textStyle: TextStyle = MaterialTheme.typography.subtitle1,
+    color: Color = MaterialTheme.colors.primary,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+    deletable: Boolean = true,
+    onDelete: ((String) -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colors.primary.copy(alpha = 0.12f), CircleShape)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .background(color.copy(alpha = 0.12f), CircleShape)
+            .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -194,27 +200,34 @@ fun TagChip(
             text = "#$tag",
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colors.primary.copy(alpha = 0.87f),
-            style = MaterialTheme.typography.subtitle1
+            color = color.copy(alpha = 0.87f),
+            style = textStyle
         )
-        Spacer(modifier = Modifier.width(4.dp))
-        IconButton(
-            onClick = { onDelete(tag) },
-            modifier = Modifier
-                .width(16.dp)
-                .height(16.dp)
-        ) {
-            Icon(
-                Icons.Default.Close,
-                "Delete tag.",
+        Spacer(modifier = Modifier.width(2.dp))
+        if (deletable) {
+            Spacer(modifier = Modifier.width(2.dp))
+            IconButton(
+                onClick = {
+                    if (onDelete != null) {
+                        onDelete(tag)
+                    }
+                },
                 modifier = Modifier
-                    .background(
-                        color = MaterialTheme.colors.primary.copy(alpha = 0.2f),
-                        shape = CircleShape
-                    )
-                    .padding(2.dp),
-                tint = MaterialTheme.colors.onPrimary
-            )
+                    .width(16.dp)
+                    .height(16.dp)
+            ) {
+                Icon(
+                    Icons.Default.Close,
+                    "Delete tag.",
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colors.primary.copy(alpha = 0.2f),
+                            shape = CircleShape
+                        )
+                        .padding(2.dp),
+                    tint = MaterialTheme.colors.onPrimary
+                )
+            }
         }
     }
 }
