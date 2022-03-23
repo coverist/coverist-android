@@ -17,19 +17,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import dev.yjyoon.coverist.ui.bookshelf.BookShelfRow
-import dev.yjyoon.coverist.ui.theme.CoveristTheme
+import dev.yjyoon.coverist.ui.bookshelf.BookShelfViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun TitleScreen(navController: NavController) {
+fun TitleScreen(
+    navController: NavController,
+    bookShelfViewModel: BookShelfViewModel
+) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
@@ -66,7 +67,7 @@ fun TitleScreen(navController: NavController) {
                         }
                     }
                 })
-            BookShelfRow(navController = navController)
+            BookShelfRow(navController = navController, viewModel = bookShelfViewModel)
         }
     }
 }
@@ -90,7 +91,7 @@ fun TitleGraphic(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
-                .blur(8.dp)
+                .blur(4.dp)
         )
         Text(
             "내 작품의 새로운 얼굴,\n이젠 쉽고 간편하게",
@@ -148,7 +149,4 @@ fun StartButton(
 @Preview
 @Composable
 fun TitleScreenPreview() {
-    CoveristTheme() {
-        TitleScreen(navController = NavHostController(LocalContext.current))
-    }
 }

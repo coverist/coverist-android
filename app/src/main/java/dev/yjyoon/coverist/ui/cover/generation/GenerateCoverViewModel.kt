@@ -8,11 +8,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.yjyoon.coverist.data.db.entity.BookEntity
 import dev.yjyoon.coverist.data.remote.model.Book
 import dev.yjyoon.coverist.data.remote.model.Cover
 import dev.yjyoon.coverist.data.remote.model.Genre
 import dev.yjyoon.coverist.exception.NonexistentTagException
 import dev.yjyoon.coverist.exception.TagAlreadyExistsException
+import dev.yjyoon.coverist.repository.BookRepository
 import dev.yjyoon.coverist.repository.CoverRepository
 import dev.yjyoon.coverist.repository.GenreRepository
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +32,8 @@ sealed class UiState {
 @HiltViewModel
 class GenerateCoverViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
-    private val coverRepository: CoverRepository
+    private val coverRepository: CoverRepository,
+    private val bookRepository: BookRepository
 ) : ViewModel() {
 
     private var _uiState by mutableStateOf<UiState>(UiState.Input)
@@ -137,12 +140,29 @@ class GenerateCoverViewModel @Inject constructor(
 
         viewModelScope.launch {
             val response = coverRepository.generateCover(context, book)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    covers = response.body()!!
+            if (response.isSuccessful) {
+                covers = response.body()!!
+                bookRepository.addBook(coversToBookEntity())
+                withContext(Dispatchers.Main) {
                     _uiState = UiState.Show
                 }
             }
         }
     }
+
+    private fun coversToBookEntity(): BookEntity {
+        return covers[0].let {
+            BookEntity(
+                title = it.title,
+                author = it.author,
+                genre = it.genre,
+                subGenre = it.subGenre,
+                tags = it.tags,
+                coverUrls = covers.map { cover -> cover.url },
+                createdDate = it.createdDate
+            )
+        }
+    }
 }
+
+
