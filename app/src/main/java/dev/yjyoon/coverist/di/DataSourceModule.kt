@@ -1,9 +1,14 @@
 package dev.yjyoon.coverist.di
 
+import android.content.Context
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.yjyoon.coverist.data.db.BookDatabase
+import dev.yjyoon.coverist.data.db.dao.BookDao
 import dev.yjyoon.coverist.data.remote.api.CoverService
 import dev.yjyoon.coverist.data.remote.api.GenreService
 import okhttp3.OkHttpClient
@@ -15,7 +20,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataSourceModule {
+object DataSourceModule {
 
     @Singleton
     @Provides
@@ -25,7 +30,8 @@ class DataSourceModule {
     @Singleton
     @Provides
     fun provideRetrofit(@Named("BaseUrl") baseUrl: String): Retrofit {
-        val okHttpClient = OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS)
+        val okHttpClient = OkHttpClient.Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
             .connectTimeout(30, TimeUnit.SECONDS).build()
 
         return Retrofit.Builder()
@@ -44,4 +50,16 @@ class DataSourceModule {
     @Provides
     fun coverService(retrofit: Retrofit): CoverService =
         retrofit.create(CoverService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideBookDatabase(
+        @ApplicationContext context: Context
+    ): BookDatabase = Room
+        .databaseBuilder(context, BookDatabase::class.java, "book")
+        .build()
+
+    @Singleton
+    @Provides
+    fun provideBookDao(bookDatabase: BookDatabase): BookDao = bookDatabase.bookDao()
 }
