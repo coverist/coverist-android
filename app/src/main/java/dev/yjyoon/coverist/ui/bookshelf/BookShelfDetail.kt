@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -24,58 +22,88 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import dev.yjyoon.coverist.ui.common.CommonLoading
 import dev.yjyoon.coverist.ui.common.SimpleFlowRow
+import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverUiState
+import dev.yjyoon.coverist.ui.cover.generation.done.ShowCoverScreen
 import dev.yjyoon.coverist.ui.cover.generation.input.TagChip
+import dev.yjyoon.coverist.ui.cover.generation.loading.GeneratingScreen
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BookShelfDetail(
     modifier: Modifier = Modifier,
+    navController: NavController,
     viewModel: BookShelfViewModel
 ) {
-    val configuration = LocalConfiguration.current
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    Crossfade(
+        targetState = viewModel.uiState,
+        animationSpec = tween(
+            durationMillis = 100,
+            easing = LinearEasing
+        )
+    ) { targetUiState ->
+        when (targetUiState) {
+            GenerateCoverUiState.Waiting -> {
+                val configuration = LocalConfiguration.current
+                val scaffoldState = rememberBottomSheetScaffoldState()
 
-    val book by viewModel.selectedBook.observeAsState()
-    val coverIndex by viewModel.selectedCoverIndex.observeAsState(0)
+                val book = viewModel.selectedBook
+                val coverIndex = viewModel.selectedCoverIndex
 
-    if (book != null) {
-        BottomSheetScaffold(
-            sheetShape = MaterialTheme.shapes.large.copy(
-                bottomStart = CornerSize(0.dp),
-                bottomEnd = CornerSize(0.dp)
-            ),
-            sheetPeekHeight = (configuration.screenHeightDp / 1.95).dp,
-            scaffoldState = scaffoldState,
-            sheetContent = {
-                Column {
-                    BookInfo(
-                        title = book!!.title,
-                        author = book!!.author,
-                        genre = book!!.genre,
-                        subGenre = book!!.subGenre,
-                        tags = book!!.tags
-                    )
-                    Divider()
-                    Spacer(Modifier.height(4.dp))
-                    OtherCovers(
-                        coverUrls = book!!.coverUrls,
-                        onClick = viewModel::selectCoverIndex
-                    )
-                    Divider(Modifier.padding(vertical = 8.dp))
-                    GenerateButton(onClick = {})
+                if (book != null) {
+                    BottomSheetScaffold(
+                        sheetShape = MaterialTheme.shapes.large.copy(
+                            bottomStart = CornerSize(0.dp),
+                            bottomEnd = CornerSize(0.dp)
+                        ),
+                        sheetPeekHeight = (configuration.screenHeightDp / 1.95).dp,
+                        scaffoldState = scaffoldState,
+                        sheetContent = {
+                            Column {
+                                BookInfo(
+                                    title = book.title,
+                                    author = book.author,
+                                    genre = book.genre,
+                                    subGenre = book.subGenre,
+                                    tags = book.tags
+                                )
+                                Divider()
+                                Spacer(Modifier.height(4.dp))
+                                OtherCovers(
+                                    coverUrls = book.coverUrls,
+                                    onClick = viewModel::selectCoverIndex
+                                )
+                                Divider(Modifier.padding(vertical = 8.dp))
+                                GenerateButton(onClick = { viewModel.addCover(book.bookId) })
+                            }
+                        }
+                    ) {
+                        CoverGraphic(
+                            configuration = configuration,
+                            coverUrl = book.coverUrls[coverIndex]
+                        )
+                    }
+                } else {
+                    CommonLoading(modifier = Modifier.fillMaxSize())
                 }
             }
-        ) {
-            CoverGraphic(
-                configuration = configuration,
-                coverUrl = book!!.coverUrls[coverIndex]
-            )
+            GenerateCoverUiState.Generating -> {
+                GeneratingScreen()
+            }
+            GenerateCoverUiState.Done -> {
+                ShowCoverScreen(
+                    navController = navController,
+                    coverUrls = viewModel.newCovers.map { it.url },
+                    onConfirm = viewModel::confirmGeneration
+                )
+            }
+            GenerateCoverUiState.Fail -> {
+                //TODO: Fail to generate cover.
+            }
         }
-    } else {
-        CommonLoading(modifier = Modifier.fillMaxSize())
     }
 }
 

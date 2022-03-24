@@ -35,12 +35,12 @@ fun BookShelfRow(
             style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier.padding(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 12.dp)
         )
-        if (bookshelf is BookShelf.Loading)
+        if (bookshelf is BookShelfState.Loading)
             CommonLoading(modifier = Modifier.fillMaxSize())
-        else if (bookshelf is BookShelf.Empty)
+        else if (bookshelf is BookShelfState.Empty)
             EmptyBook(modifier = Modifier.fillMaxSize())
-        else if (bookshelf is BookShelf.Success) {
-            (bookshelf as BookShelf.Success).data.let {
+        else if (bookshelf is BookShelfState.Success) {
+            (bookshelf as BookShelfState.Success).data.let {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(18.dp),
                     contentPadding = PaddingValues(horizontal = 18.dp)
@@ -67,7 +67,7 @@ fun BookShelfRow(
                 }
             }
         } else {
-            // Bookshelf.Error
+            //TODO: Bookshelf.Error
         }
     }
 }
