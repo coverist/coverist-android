@@ -25,12 +25,12 @@ class BookShelfViewModel @Inject constructor(
     private val coverRepository: CoverRepository
 ) : ViewModel() {
 
-    val bookshelf: StateFlow<BookShelfState> =
+    val bookshelf: StateFlow<BookshelfState> =
         bookRepository.getAllBooks()
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
-                initialValue = BookShelfState.Loading
+                initialValue = BookshelfState.Loading
             )
 
     private var _uiState by mutableStateOf<GenerateCoverUiState>(GenerateCoverUiState.Waiting)

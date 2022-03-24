@@ -2,7 +2,7 @@ package dev.yjyoon.coverist.repository
 
 import dev.yjyoon.coverist.data.db.dao.BookDao
 import dev.yjyoon.coverist.data.db.entity.BookEntity
-import dev.yjyoon.coverist.ui.bookshelf.BookShelfState
+import dev.yjyoon.coverist.ui.bookshelf.BookshelfState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -12,7 +12,7 @@ interface BookRepository {
     suspend fun addBook(book: BookEntity)
     suspend fun updateBook(book: BookEntity)
     suspend fun deleteBook(book: BookEntity)
-    fun getAllBooks(): Flow<BookShelfState>
+    fun getAllBooks(): Flow<BookshelfState>
 }
 
 class BookRepositoryImpl @Inject constructor(
@@ -30,11 +30,11 @@ class BookRepositoryImpl @Inject constructor(
         bookDao.deleteBook(book)
     }
 
-    override fun getAllBooks(): Flow<BookShelfState> = flow {
-        emit(BookShelfState.Loading)
+    override fun getAllBooks(): Flow<BookshelfState> = flow {
+        emit(BookshelfState.Loading)
         bookDao.getAllBooks().collect {
-            if (it.isEmpty()) emit(BookShelfState.Empty)
-            else emit(BookShelfState.Success(it))
+            if (it.isEmpty()) emit(BookshelfState.Empty)
+            else emit(BookshelfState.Success(it))
         }
-    }.catch { e -> emit(BookShelfState.Error(e)) }
+    }.catch { e -> emit(BookshelfState.Error(e)) }
 }
