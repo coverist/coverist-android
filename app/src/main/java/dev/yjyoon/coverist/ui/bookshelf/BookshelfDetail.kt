@@ -23,7 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import com.skydoves.landscapist.ShimmerParams
+import com.skydoves.landscapist.glide.GlideImage
 import dev.yjyoon.coverist.ui.common.CommonLoading
 import dev.yjyoon.coverist.ui.common.SimpleFlowRow
 import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverUiState
@@ -123,10 +124,16 @@ fun CoverGraphic(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AsyncImage(
-                model = it,
-                contentDescription = null,
+            GlideImage(
+                imageModel = it,
                 contentScale = ContentScale.Crop,
+                shimmerParams = ShimmerParams(
+                    baseColor = MaterialTheme.colors.surface,
+                    highlightColor = Color.Gray,
+                    durationMillis = 350,
+                    dropOff = 0.65f,
+                    tilt = 20f
+                ),
                 colorFilter = ColorFilter.tint(
                     color = Color.Black.copy(alpha = 0.25f),
                     blendMode = BlendMode.Darken
@@ -146,10 +153,19 @@ fun CoverGraphic(
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.align(Alignment.Center)
                 ) {
-                    AsyncImage(
-                        model = it,
-                        contentDescription = null,
-                        modifier = Modifier.width((configuration.screenWidthDp / 2).dp)
+                    GlideImage(
+                        imageModel = it,
+                        contentScale = ContentScale.Crop,
+                        shimmerParams = ShimmerParams(
+                            baseColor = MaterialTheme.colors.surface,
+                            highlightColor = Color.Gray,
+                            durationMillis = 350,
+                            dropOff = 0.65f,
+                            tilt = 20f
+                        ),
+                        modifier = Modifier
+                            .width((configuration.screenWidthDp / 2).dp)
+                            .aspectRatio(2 / 3f)
                     )
                 }
             }
@@ -221,11 +237,19 @@ fun OtherCovers(
                     shape = RoundedCornerShape(4.dp),
                     elevation = 2.dp
                 ) {
-                    AsyncImage(
-                        model = coverUrls[index],
-                        contentDescription = null,
+                    GlideImage(
+                        imageModel = coverUrls[index],
+                        contentScale = ContentScale.Crop,
+                        shimmerParams = ShimmerParams(
+                            baseColor = MaterialTheme.colors.surface,
+                            highlightColor = Color.Gray,
+                            durationMillis = 350,
+                            dropOff = 0.65f,
+                            tilt = 20f
+                        ),
                         modifier = Modifier
-                            .width(108.dp)
+                            .height(144.dp)
+                            .aspectRatio(2 / 3f)
                             .clickable { onClick(index) },
                     )
                 }

@@ -12,11 +12,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import com.skydoves.landscapist.ShimmerParams
+import com.skydoves.landscapist.glide.GlideImage
 import dev.yjyoon.coverist.ui.common.CommonLoading
 
 @Composable
@@ -50,10 +52,16 @@ fun BookShelfRow(
                             shape = RoundedCornerShape(6.dp),
                             elevation = 5.dp
                         ) {
-                            AsyncImage(
-                                model = it[index].coverUrls[0],
-                                contentDescription = null,
+                            GlideImage(
+                                imageModel = it[index].coverUrls[0],
                                 contentScale = ContentScale.Crop,
+                                shimmerParams = ShimmerParams(
+                                    baseColor = MaterialTheme.colors.surface,
+                                    highlightColor = Color.Gray,
+                                    durationMillis = 350,
+                                    dropOff = 0.65f,
+                                    tilt = 20f
+                                ),
                                 modifier = Modifier
                                     .width(144.dp)
                                     .aspectRatio(2 / 3f)
