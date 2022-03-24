@@ -37,7 +37,7 @@ import dev.yjyoon.coverist.ui.cover.generation.loading.GeneratingScreen
 fun BookShelfDetail(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: BookShelfViewModel
+    viewModel: BookshelfViewModel
 ) {
     Crossfade(
         targetState = viewModel.uiState,

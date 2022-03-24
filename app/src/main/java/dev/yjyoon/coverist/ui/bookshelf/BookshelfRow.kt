@@ -25,7 +25,7 @@ import dev.yjyoon.coverist.ui.common.CommonLoading
 fun BookShelfRow(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: BookShelfViewModel
+    viewModel: BookshelfViewModel
 ) {
     val bookshelf by viewModel.bookshelf.collectAsState()
 

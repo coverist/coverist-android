@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import dev.yjyoon.coverist.ui.bookshelf.BookShelfRow
-import dev.yjyoon.coverist.ui.bookshelf.BookShelfViewModel
+import dev.yjyoon.coverist.ui.bookshelf.BookshelfViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun TitleScreen(
     navController: NavController,
-    bookShelfViewModel: BookShelfViewModel
+    bookShelfViewModel: BookshelfViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()

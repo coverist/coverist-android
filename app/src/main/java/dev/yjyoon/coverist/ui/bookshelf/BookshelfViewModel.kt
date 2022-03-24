@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class BookShelfViewModel @Inject constructor(
+class BookshelfViewModel @Inject constructor(
     private val bookRepository: BookRepository,
     private val coverRepository: CoverRepository
 ) : ViewModel() {

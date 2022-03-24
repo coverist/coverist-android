@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.yjyoon.coverist.ui.bookshelf.BookShelfDetail
-import dev.yjyoon.coverist.ui.bookshelf.BookShelfViewModel
+import dev.yjyoon.coverist.ui.bookshelf.BookshelfViewModel
 import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverScreen
 import dev.yjyoon.coverist.ui.title.TitleScreen
 
@@ -19,7 +19,7 @@ object NavDestination {
 @Composable
 fun NavGraph(navController: NavHostController) {
     // Declare singleton view models here.
-    val bookShelfViewModel: BookShelfViewModel = hiltViewModel()
+    val bookShelfViewModel: BookshelfViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
