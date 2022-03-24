@@ -18,7 +18,8 @@ import dev.yjyoon.coverist.ui.theme.CoveristTheme
 @Composable
 fun ShowCoverScreen(
     navController: NavController,
-    coverUrls: List<String>
+    coverUrls: List<String>,
+    onConfirm: () -> Unit
 ) {
 
     BackHandler {
@@ -31,7 +32,7 @@ fun ShowCoverScreen(
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = MaterialTheme.colors.onPrimary,
         bottomBar = {
-            ConfirmButton(navController = navController)
+            ConfirmButton(onClick = onConfirm)
         }
     ) { innerPadding ->
         Column(
@@ -64,8 +65,8 @@ fun ShowCoverTitle(modifier: Modifier = Modifier) {
 
 @Composable
 fun ConfirmButton(
-    navController: NavController,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -73,11 +74,7 @@ fun ConfirmButton(
             .padding(18.dp)
     ) {
         Button(
-            onClick = {
-                navController.navigate("title") {
-                    popUpTo("title") { inclusive = true }
-                }
-            },
+            onClick = onClick,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.onPrimary,
                 contentColor = MaterialTheme.colors.primary

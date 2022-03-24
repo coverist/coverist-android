@@ -32,7 +32,7 @@ fun NavGraph(navController: NavHostController) {
             GenerateCoverScreen(navController = navController, viewModel = hiltViewModel())
         }
         composable(NavDestination.BOOKSHELF_DETAIL) {
-            BookShelfDetail(viewModel = bookShelfViewModel)
+            BookShelfDetail(navController = navController, viewModel = bookShelfViewModel)
         }
     }
 }

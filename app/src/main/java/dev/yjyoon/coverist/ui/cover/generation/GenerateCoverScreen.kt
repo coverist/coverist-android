@@ -19,28 +19,33 @@ fun GenerateCoverScreen(
     Crossfade(
         targetState = viewModel.uiState,
         animationSpec = tween(
-            durationMillis = 500,
+            durationMillis = 100,
             easing = LinearEasing
         )
     ) { targetUiState ->
         when (targetUiState) {
-            UiState.Input -> {
+            GenerateCoverUiState.Waiting -> {
                 BookInfoInputScreen(
                     navController = navController,
                     viewModel = viewModel
                 )
             }
-            UiState.Generate -> {
+            GenerateCoverUiState.Generating -> {
                 GeneratingScreen()
             }
-            UiState.Show -> {
+            GenerateCoverUiState.Done -> {
                 ShowCoverScreen(
                     navController = navController,
-                    coverUrls = viewModel.covers.map { it.url }
+                    coverUrls = viewModel.covers.map { it.url },
+                    onConfirm = {
+                        navController.navigate("title") {
+                            popUpTo("title") { inclusive = true }
+                        }
+                    }
                 )
             }
-            UiState.Error -> {
-
+            GenerateCoverUiState.Fail -> {
+                //TODO: Fail to generate.
             }
         }
     }

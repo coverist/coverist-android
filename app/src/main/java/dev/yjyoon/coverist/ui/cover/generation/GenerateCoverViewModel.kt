@@ -22,13 +22,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-sealed class UiState {
-    object Input : UiState()
-    object Generate : UiState()
-    object Show : UiState()
-    object Error : UiState()
-}
-
 @HiltViewModel
 class GenerateCoverViewModel @Inject constructor(
     private val genreRepository: GenreRepository,
@@ -36,9 +29,8 @@ class GenerateCoverViewModel @Inject constructor(
     private val bookRepository: BookRepository
 ) : ViewModel() {
 
-    private var _uiState by mutableStateOf<UiState>(UiState.Input)
-    val uiState: UiState
-        get() = _uiState
+    private var _uiState by mutableStateOf<GenerateCoverUiState>(GenerateCoverUiState.Waiting)
+    val uiState: GenerateCoverUiState get() = _uiState
 
     val genres: LiveData<List<Genre>> = liveData {
         emit(genreRepository.getGenres())
@@ -127,7 +119,7 @@ class GenerateCoverViewModel @Inject constructor(
         }
 
     fun generateCover(context: Context) {
-        _uiState = UiState.Generate
+        _uiState = GenerateCoverUiState.Generating
 
         val book = Book(
             title = bookTitle,
@@ -140,11 +132,15 @@ class GenerateCoverViewModel @Inject constructor(
 
         viewModelScope.launch {
             val response = coverRepository.generateCover(context, book)
-            if (response.isSuccessful) {
+            if (response.isSuccessful && response.body() != null) {
                 covers = response.body()!!
                 bookRepository.addBook(coversToBookEntity())
                 withContext(Dispatchers.Main) {
-                    _uiState = UiState.Show
+                    _uiState = GenerateCoverUiState.Done
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    _uiState = GenerateCoverUiState.Fail
                 }
             }
         }
@@ -153,6 +149,7 @@ class GenerateCoverViewModel @Inject constructor(
     private fun coversToBookEntity(): BookEntity {
         return covers[0].let {
             BookEntity(
+                bookId = it.bookId,
                 title = it.title,
                 author = it.author,
                 genre = it.genre,
