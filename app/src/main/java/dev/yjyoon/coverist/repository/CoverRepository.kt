@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 interface CoverRepository {
     suspend fun generateCover(context: Context, book: Book): Response<List<Cover>>
+    suspend fun addCover(bookId: Long): Response<List<Cover>>
 }
 
 class CoverRepositoryImpl @Inject constructor(
@@ -28,4 +29,6 @@ class CoverRepositoryImpl @Inject constructor(
 
         return coverService.generateCover(bookInfo, publisherImage)
     }
+
+    override suspend fun addCover(bookId: Long) = coverService.addCover(bookId)
 }

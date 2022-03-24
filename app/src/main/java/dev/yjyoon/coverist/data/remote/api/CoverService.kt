@@ -4,10 +4,7 @@ import dev.yjyoon.coverist.data.remote.model.Cover
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.PartMap
+import retrofit2.http.*
 
 interface CoverService {
     @Multipart
@@ -17,4 +14,7 @@ interface CoverService {
         @PartMap bookInfo: MutableMap<String, RequestBody>,
         @Part publisherImage: MultipartBody.Part?
     ): Response<List<Cover>>
+
+    @POST("book/{id}")
+    suspend fun addCover(@Path("id") id: Long): Response<List<Cover>>
 }
