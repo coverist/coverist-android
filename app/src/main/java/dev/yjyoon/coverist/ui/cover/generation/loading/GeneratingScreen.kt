@@ -35,7 +35,7 @@ fun GeneratingScreen() {
                 strokeWidth = 24.dp
             )
             Text(
-                "표지를 생성 중입니다.\n잠시만 기다려주세요!",
+                "표지를 생성 중입니다\n잠시만 기다려주세요!",
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.BottomCenter)

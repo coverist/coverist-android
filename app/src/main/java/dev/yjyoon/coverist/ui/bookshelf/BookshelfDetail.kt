@@ -10,7 +10,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Image
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -19,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -31,6 +35,7 @@ import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverUiState
 import dev.yjyoon.coverist.ui.cover.generation.done.ShowCoverScreen
 import dev.yjyoon.coverist.ui.cover.generation.input.TagChip
 import dev.yjyoon.coverist.ui.cover.generation.loading.GeneratingScreen
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -48,44 +53,64 @@ fun BookShelfDetail(
     ) { targetUiState ->
         when (targetUiState) {
             GenerateCoverUiState.Waiting -> {
+                val context = LocalContext.current
                 val configuration = LocalConfiguration.current
+
                 val scaffoldState = rememberBottomSheetScaffoldState()
+                val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+                val scope = rememberCoroutineScope()
 
                 val book = viewModel.selectedBook
                 val coverIndex = viewModel.selectedCoverIndex
 
                 if (book != null) {
-                    BottomSheetScaffold(
-                        sheetShape = MaterialTheme.shapes.large.copy(
-                            bottomStart = CornerSize(0.dp),
-                            bottomEnd = CornerSize(0.dp)
-                        ),
-                        sheetPeekHeight = (configuration.screenHeightDp / 1.95).dp,
-                        scaffoldState = scaffoldState,
+                    ModalBottomSheetLayout(
+                        sheetState = sheetState,
                         sheetContent = {
-                            Column {
-                                BookInfo(
-                                    title = book.title,
-                                    author = book.author,
-                                    genre = book.genre,
-                                    subGenre = book.subGenre,
-                                    tags = book.tags
-                                )
-                                Divider()
-                                Spacer(Modifier.height(4.dp))
-                                OtherCovers(
-                                    coverUrls = book.coverUrls,
-                                    onClick = viewModel::selectCoverIndex
-                                )
-                                Divider(Modifier.padding(vertical = 8.dp))
-                                GenerateButton(onClick = { viewModel.addCover(book.bookId) })
-                            }
-                        }
+                            ModalBottomSheetButton(onClick = {
+                                viewModel.saveCover(context)
+                                scope.launch {
+                                    sheetState.hide()
+                                    scaffoldState.snackbarHostState
+                                        .showSnackbar("해당 북커버 이미지를 갤러리에 저장했어요!")
+                                }
+                            })
+                        },
+                        sheetShape = MaterialTheme.shapes.small
                     ) {
-                        CoverGraphic(
-                            configuration = configuration,
-                            coverUrl = book.coverUrls[coverIndex]
-                        )
+                        BottomSheetScaffold(
+                            sheetShape = MaterialTheme.shapes.large.copy(
+                                bottomStart = CornerSize(0.dp),
+                                bottomEnd = CornerSize(0.dp)
+                            ),
+                            sheetPeekHeight = (configuration.screenHeightDp / 1.95).dp,
+                            scaffoldState = scaffoldState,
+                            sheetContent = {
+                                Column {
+                                    BookInfo(
+                                        title = book.title,
+                                        author = book.author,
+                                        genre = book.genre,
+                                        subGenre = book.subGenre,
+                                        tags = book.tags
+                                    )
+                                    Divider()
+                                    Spacer(Modifier.height(4.dp))
+                                    OtherCovers(
+                                        coverUrls = book.coverUrls,
+                                        onClick = viewModel::selectCoverIndex
+                                    )
+                                    Divider(Modifier.padding(vertical = 8.dp))
+                                    GenerateButton(onClick = { viewModel.addCover(book.bookId) })
+                                }
+                            }
+                        ) {
+                            CoverGraphic(
+                                configuration = configuration,
+                                coverUrl = book.coverUrls[coverIndex],
+                                onClick = { scope.launch { sheetState.show() } }
+                            )
+                        }
                     }
                 } else {
                     CommonLoading(modifier = Modifier.fillMaxSize())
@@ -111,7 +136,8 @@ fun BookShelfDetail(
 @Composable
 fun CoverGraphic(
     configuration: Configuration,
-    coverUrl: String
+    coverUrl: String,
+    onClick: () -> Unit
 ) {
     Crossfade(
         targetState = coverUrl,
@@ -166,6 +192,7 @@ fun CoverGraphic(
                         modifier = Modifier
                             .width((configuration.screenWidthDp / 2).dp)
                             .aspectRatio(2 / 3f)
+                            .clickable { onClick() }
                     )
                 }
             }
@@ -273,5 +300,26 @@ fun GenerateButton(
             "이 책으로 새로운 표지 만들기",
             style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold)
         )
+    }
+}
+
+@Composable
+fun ModalBottomSheetButton(
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(18.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            Icons.Rounded.Image,
+            contentDescription = "Save cover image.",
+            tint = Color.Gray
+        )
+        Spacer(Modifier.width(24.dp))
+        Text("갤러리에 저장")
     }
 }

@@ -1,5 +1,6 @@
 package dev.yjyoon.coverist.ui.bookshelf
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import dev.yjyoon.coverist.data.remote.model.Cover
 import dev.yjyoon.coverist.repository.BookRepository
 import dev.yjyoon.coverist.repository.CoverRepository
 import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverUiState
+import dev.yjyoon.coverist.util.SaveImageUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -78,5 +80,15 @@ class BookshelfViewModel @Inject constructor(
     fun confirmGeneration() {
         newCovers = emptyList()
         _uiState = GenerateCoverUiState.Waiting
+    }
+
+    fun saveCover(context: Context) {
+        val url = selectedBook!!.coverUrls[selectedCoverIndex]
+        val filename = selectedBook!!.title + System.currentTimeMillis().toString() + ".jpeg"
+
+        viewModelScope.launch {
+            val bitmap = SaveImageUtil.getBitmapFromUrl(url)
+            SaveImageUtil.saveImageToStorage(context, bitmap, filename)
+        }
     }
 }
