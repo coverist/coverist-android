@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">커버리스트</string>
     <string name="coverist">Coverist</string>
-    <string name="title_activity_input">InputActivity</string>
     <string name="book_info_q1">제목과 저자를 입력해주세요</string>
     <string name="book_info_q2">장르를 선택해주세요</string>
     <string name="book_info_q3">세부 장르를 선택해주세요</string>
@@ -9,5 +8,4 @@
     <string name="book_info_q5">출판사 이미지를 넣어주세요</string>
     <string name="close_book_info_input">도서 표지 생성을 그만둘까요?</string>
     <string name="book_info_input">도서 정보 입력</string>
-    <string name="long_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
 </resources>
