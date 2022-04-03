@@ -4,4 +4,10 @@
     <style name="Theme.Coverist" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/deep_purple_450</item>
     </style>
+
+    <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/deep_purple_400</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/coverist_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.Coverist</item>
+    </style>
 </resources>
