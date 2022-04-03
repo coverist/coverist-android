@@ -26,10 +26,11 @@ import dev.yjyoon.coverist.ui.NavDestination
 @Composable
 fun TitleDrawer(
     navController: NavController,
+    isOpen: Boolean,
     onBack: () -> Unit
 ) {
-    BackHandler(onBack = onBack)
-    
+    BackHandler(enabled = isOpen, onBack = onBack)
+
     Column {
         Box(
             modifier = Modifier

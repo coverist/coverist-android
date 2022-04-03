@@ -37,6 +37,7 @@ fun TitleScreen(
         drawerContent = {
             TitleDrawer(
                 navController = navController,
+                isOpen = scaffoldState.drawerState.isOpen,
                 onBack = {
                     scope.launch {
                         scaffoldState.drawerState.close()
