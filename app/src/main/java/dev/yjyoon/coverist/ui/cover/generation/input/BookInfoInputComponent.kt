@@ -307,12 +307,13 @@ fun UploadPublisherImage(
                     enabled = !isEmpty,
                     contentPadding = PaddingValues(24.dp)
                 ) {
-                    val imageAssetId = R.drawable.ic_undraw_upload_re_pasx
+                    val imageAssetId = R.drawable.ic_undraw_add_files_re_v09g
 
                     Column(
                         verticalArrangement = Arrangement.SpaceBetween,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Spacer(modifier = Modifier.height(18.dp))
                         Image(
                             painter = painterResource(id = imageAssetId),
                             contentDescription = null,
