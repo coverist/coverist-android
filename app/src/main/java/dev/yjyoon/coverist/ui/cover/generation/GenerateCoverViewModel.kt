@@ -49,11 +49,11 @@ class GenerateCoverViewModel @Inject constructor(
     lateinit var covers: List<Cover>
 
     fun editTitle(title: String) {
-        bookTitle = title.trim()
+        bookTitle = title
     }
 
     fun editAuthor(author: String) {
-        bookAuthor = author.trim()
+        bookAuthor = author
     }
 
     fun editGenre(genre: Genre) {
@@ -110,7 +110,7 @@ class GenerateCoverViewModel @Inject constructor(
 
     fun isValidInput(step: Int): Boolean =
         when (step) {
-            0 -> bookTitle != "" && bookAuthor != ""
+            0 -> bookTitle.trim() != "" && bookAuthor.trim() != ""
             1 -> bookGenre != null
             2 -> bookSubGenre != null
             3 -> bookTags.isNotEmpty()
@@ -122,8 +122,8 @@ class GenerateCoverViewModel @Inject constructor(
         _uiState = GenerateCoverUiState.Generating
 
         val book = Book(
-            title = bookTitle,
-            author = bookAuthor,
+            title = bookTitle.trim(),
+            author = bookAuthor.trim(),
             genre = bookGenre!!.text,
             subGenre = bookSubGenre!!.text,
             tags = bookTags,
