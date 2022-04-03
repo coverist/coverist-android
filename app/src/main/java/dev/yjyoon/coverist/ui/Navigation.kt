@@ -8,12 +8,14 @@ import androidx.navigation.compose.composable
 import dev.yjyoon.coverist.ui.bookshelf.BookShelfDetail
 import dev.yjyoon.coverist.ui.bookshelf.BookshelfViewModel
 import dev.yjyoon.coverist.ui.cover.generation.GenerateCoverScreen
+import dev.yjyoon.coverist.ui.oss.OssScreen
 import dev.yjyoon.coverist.ui.title.TitleScreen
 
 object NavDestination {
     const val TITLE = "title"
     const val COVER_GENERATION = "cover-generation"
     const val BOOKSHELF_DETAIL = "bookshelf-detail"
+    const val OSS_DETAIL = "oss-detail"
 }
 
 @Composable
@@ -33,6 +35,9 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(NavDestination.BOOKSHELF_DETAIL) {
             BookShelfDetail(navController = navController, viewModel = bookShelfViewModel)
+        }
+        composable(NavDestination.OSS_DETAIL) {
+            OssScreen()
         }
     }
 }
