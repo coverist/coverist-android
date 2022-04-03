@@ -34,7 +34,15 @@ fun TitleScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        drawerContent = { TitleDrawer(navController) },
+        drawerContent = {
+            TitleDrawer(
+                navController = navController,
+                onBack = {
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                })
+        },
         drawerShape = TitleDrawerShape,
         bottomBar = {
             StartButton(

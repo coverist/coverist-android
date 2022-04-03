@@ -1,5 +1,6 @@
 package dev.yjyoon.coverist.ui.title
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,8 +25,11 @@ import dev.yjyoon.coverist.ui.NavDestination
 
 @Composable
 fun TitleDrawer(
-    navController: NavController
+    navController: NavController,
+    onBack: () -> Unit
 ) {
+    BackHandler(onBack = onBack)
+    
     Column {
         Box(
             modifier = Modifier
