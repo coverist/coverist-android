@@ -262,12 +262,11 @@ fun UploadPublisherImage(
 
     if (bitmap == null) {
 
-        Column {
+        Column() {
             Surface(
                 shape = MaterialTheme.shapes.medium
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -278,11 +277,6 @@ fun UploadPublisherImage(
                         .padding(8.dp)
 
                 ) {
-                    Text(
-                        "출판사 이미지가 따로 없어요",
-                        color = if (isEmpty) MaterialTheme.colors.primary
-                        else MaterialTheme.colors.onSurface.copy(alpha = 0.87f)
-                    )
                     Checkbox(
                         checked = isEmpty,
                         onCheckedChange = {
@@ -290,6 +284,12 @@ fun UploadPublisherImage(
                             setEmpty(it)
                         },
                         colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        "출판사 이미지가 따로 없어요",
+                        color = if (isEmpty) MaterialTheme.colors.primary
+                        else MaterialTheme.colors.onSurface.copy(alpha = 0.87f)
                     )
                 }
             }
@@ -338,7 +338,7 @@ fun UploadPublisherImage(
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                bitmap = bitmap!!.asImageBitmap(),
+                bitmap = bitmap.asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier.weight(1f)
             )
