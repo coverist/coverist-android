@@ -1,6 +1,5 @@
 package dev.yjyoon.coverist.ui.cover.generation.input
 
-import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -241,8 +240,6 @@ fun UploadPublisherImage(
 ) {
     val context = LocalContext.current
 
-    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
-
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = onUpload
@@ -250,13 +247,12 @@ fun UploadPublisherImage(
 
     var isEmpty by remember { mutableStateOf(false) }
 
-    // API level 28 이하는 deprecated 된 MediaStore.Images.Media.getBitmap 사용
+    // API level 28 이하는 MediaStore.Images.Media.getBitmap 사용 (deprecated)
     // 그 이상부터 ImageDecoder.createSource 사용
-    imageUri?.let {
-        bitmap = if (Build.VERSION.SDK_INT < 28) {
+    val bitmap = imageUri?.let {
+        if (Build.VERSION.SDK_INT < 28) {
             MediaStore.Images
                 .Media.getBitmap(context.contentResolver, it)
-
         } else {
             val source = ImageDecoder
                 .createSource(context.contentResolver, it)
@@ -361,10 +357,7 @@ fun UploadPublisherImage(
                 }
                 Spacer(modifier = Modifier.width(12.dp))
                 TextButton(
-                    onClick = {
-                        onDelete()
-                        bitmap = null
-                    },
+                    onClick = { onDelete() },
                     modifier = Modifier.weight(1f),
                 ) {
                     Icon(Icons.Rounded.Delete, contentDescription = null)
