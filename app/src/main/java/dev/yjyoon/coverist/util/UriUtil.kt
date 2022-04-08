@@ -6,7 +6,7 @@ import java.io.File
 
 object UriUtil {
     fun toFile(context: Context, uri: Uri): File {
-        val fileName = getFileName(uri)
+        val fileName = getFileName(context, uri)
 
         val file = FileUtil.createTempFile(context, fileName)
         FileUtil.copyToFile(context, uri, file)
@@ -14,12 +14,9 @@ object UriUtil {
         return File(file.absolutePath)
     }
 
-    fun getFileName(uri: Uri): String {
-        val temp = uri.path!!.split("/")
-
-        val name = temp[temp.size - 1] + System.currentTimeMillis().toString()
-        val ext = temp[temp.size - 2]
-
+    fun getFileName(context: Context, uri: Uri): String {
+        val name = uri.toString().split("/").last()
+        val ext = context.contentResolver.getType(uri)!!.split("/").last()
         return "$name.$ext"
     }
 }
