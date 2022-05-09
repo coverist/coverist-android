@@ -171,14 +171,11 @@ fun InputContent(
                     )
                 }
                 BookInfoInput.Type.Publisher -> {
-                    UploadPublisherImage(
-                        imageUri = viewModel.bookPublisher,
-                        onUpload = viewModel::editPublisher,
-                        onDelete = viewModel::deletePublisher,
-                        setEmpty = viewModel::setPublisherEmpty
+                    InputPublisher(
+                        publisher = viewModel.bookPublisher,
+                        onEditPublisher = viewModel::editPublisher
                     )
                 }
-                else -> {}
             }
         }
     }

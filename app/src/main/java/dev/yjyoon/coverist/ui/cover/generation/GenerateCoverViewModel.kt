@@ -1,7 +1,6 @@
 package dev.yjyoon.coverist.ui.cover.generation
 
 import android.content.Context
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -43,8 +42,7 @@ class GenerateCoverViewModel @Inject constructor(
     var bookGenre by mutableStateOf<Genre?>(null)
     var bookSubGenre by mutableStateOf<Genre?>(null)
     var bookTags = mutableStateListOf<String>()
-    var bookPublisher by mutableStateOf<Uri?>(null)
-    var isBookPublisherEmpty by mutableStateOf(false)
+    var bookPublisher by mutableStateOf("")
 
     lateinit var covers: List<Cover>
 
@@ -96,16 +94,8 @@ class GenerateCoverViewModel @Inject constructor(
         return bookTags.size < 5
     }
 
-    fun editPublisher(uri: Uri?) {
-        bookPublisher = uri
-    }
-
-    fun deletePublisher() {
-        bookPublisher = null
-    }
-
-    fun setPublisherEmpty(empty: Boolean) {
-        isBookPublisherEmpty = empty
+    fun editPublisher(publisher: String) {
+        bookPublisher = publisher
     }
 
     fun isValidInput(step: Int): Boolean =
@@ -114,7 +104,7 @@ class GenerateCoverViewModel @Inject constructor(
             1 -> bookGenre != null
             2 -> bookSubGenre != null
             3 -> bookTags.isNotEmpty()
-            4 -> bookPublisher != null || isBookPublisherEmpty
+            4 -> true
             else -> false
         }
 

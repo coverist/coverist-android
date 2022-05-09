@@ -1,16 +1,7 @@
 package dev.yjyoon.coverist.ui.cover.generation.input
 
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -19,25 +10,20 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Tag
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.yjyoon.coverist.R
 import dev.yjyoon.coverist.data.remote.model.Genre
 import dev.yjyoon.coverist.ui.common.SimpleFlowRow
 import dev.yjyoon.coverist.ui.common.TextInputDialog
-import dev.yjyoon.coverist.ui.theme.CoveristTheme
 
 @Composable
 fun TitleAndAuthorInput(
@@ -232,147 +218,25 @@ fun TagChip(
 }
 
 @Composable
-fun UploadPublisherImage(
-    imageUri: Uri?,
-    onUpload: (Uri?) -> Unit,
-    onDelete: () -> Unit,
-    setEmpty: (Boolean) -> Unit
+fun InputPublisher(
+    publisher: String,
+    onEditPublisher: (String) -> Unit
 ) {
-    val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = onUpload
-    )
-
-    var isEmpty by remember { mutableStateOf(false) }
-
-    // API level 28 이하는 MediaStore.Images.Media.getBitmap 사용 (deprecated)
-    // 그 이상부터 ImageDecoder.createSource 사용
-    val bitmap = imageUri?.let {
-        if (Build.VERSION.SDK_INT < 28) {
-            MediaStore.Images
-                .Media.getBitmap(context.contentResolver, it)
-        } else {
-            val source = ImageDecoder
-                .createSource(context.contentResolver, it)
-            ImageDecoder.decodeBitmap(source)
-        }
-    }
-
-    if (bitmap == null) {
-
-        Column() {
-            Surface(
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            isEmpty = !isEmpty
-                            setEmpty(isEmpty)
-                        }
-                        .padding(8.dp)
-
-                ) {
-                    Checkbox(
-                        checked = isEmpty,
-                        onCheckedChange = {
-                            isEmpty = it
-                            setEmpty(it)
-                        },
-                        colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(
-                        "출판사 이미지가 따로 없어요",
-                        color = if (isEmpty) MaterialTheme.colors.primary
-                        else MaterialTheme.colors.onSurface.copy(alpha = 0.87f)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(18.dp))
-            AnimatedVisibility(
-                visible = !isEmpty,
-                modifier = Modifier.weight(1f)
-            ) {
-                OutlinedButton(
-                    onClick = { launcher.launch("image/*") },
-                    enabled = !isEmpty,
-                    contentPadding = PaddingValues(24.dp)
-                ) {
-                    val imageAssetId = R.drawable.ic_undraw_add_files_re_v09g
-
-                    Column(
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Spacer(modifier = Modifier.height(18.dp))
-                        Image(
-                            painter = painterResource(id = imageAssetId),
-                            contentDescription = null,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(modifier = Modifier.height(18.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Icon(Icons.Rounded.AddPhotoAlternate, contentDescription = null)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("이미지 업로드")
-                        }
-                        Spacer(modifier = Modifier.height(18.dp))
-                    }
-                }
-            }
-        }
-
-    } else {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier.weight(1f)
-            )
-            Spacer(modifier = Modifier.height(18.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextButton(
-                    onClick = { launcher.launch("image/*") },
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(Icons.Rounded.SwapHoriz, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("다시 업로드")
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-                TextButton(
-                    onClick = { onDelete() },
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(Icons.Rounded.Delete, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("삭제")
-                }
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TagsRowPreview() {
-    CoveristTheme() {
-        UploadPublisherImage(onUpload = {}, onDelete = {}, imageUri = null, setEmpty = {})
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        OutlinedTextField(
+            value = publisher,
+            onValueChange = onEditPublisher,
+            label = { Text("출판사") },
+            placeholder = { Text("출판사가 없으면 비워주세요") },
+            singleLine = true,
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
