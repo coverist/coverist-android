@@ -7,7 +7,7 @@
 
     <style name="Theme.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/deep_purple_400</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/coverist_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/coverist_splash</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.Coverist</item>
     </style>
