@@ -1,6 +1,7 @@
 package dev.yjyoon.coverist.ui.title
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -17,14 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import dev.yjyoon.coverist.R
 import dev.yjyoon.coverist.ui.bookshelf.BookShelfRow
 import dev.yjyoon.coverist.ui.bookshelf.BookshelfViewModel
-import dev.yjyoon.coverist.ui.theme.TitleDrawerShape
 import kotlinx.coroutines.launch
 
 @Composable
@@ -93,16 +94,14 @@ fun TitleGraphic(
             .height(configuration.screenWidthDp.dp)
             .background(color = MaterialTheme.colors.primary)
     ) {
-
-        AsyncImage(
-            "https://mblogthumb-phinf.pstatic.net/MjAyMDA3MTRfNzAg/MDAxNTk0Njk2ODE2MTIy.pv4Ij7GFJwXLBKhwL2Jjcj59WdDc5hfdmzdVjUycDHkg.x51bDgp1jKX3SuQsWoHdWIu9OcaBOrpy5gtWmr9niWAg.PNG.zencstory/SE-b3c3d58a-e05d-4285-a9bb-8a9c67e07643.png?type=w800",
+        Image(
+            painter = painterResource(id = R.drawable.cover_sample_01),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
-                .blur(4.dp)
-
+                .blur(12.dp)
         )
         Text(
             "내 작품의 새로운 얼굴,\n이젠 쉽고 간편하게",

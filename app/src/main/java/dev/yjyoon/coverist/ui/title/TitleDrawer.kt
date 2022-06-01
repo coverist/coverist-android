@@ -12,7 +12,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Web
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.yjyoon.coverist.BuildConfig
-import dev.yjyoon.coverist.ui.NavDestination
 import dev.yjyoon.coverist.R
+import dev.yjyoon.coverist.ui.NavDestination
 
 @Composable
 fun TitleDrawer(
@@ -53,19 +52,6 @@ fun TitleDrawer(
         LazyColumn {
             item {
                 Spacer(Modifier.height(16.dp))
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { }
-                        .padding(vertical = 20.dp, horizontal = 24.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Rounded.Web, contentDescription = null, tint = Color.Gray)
-                    Spacer(Modifier.width(16.dp))
-                    Text("웹페이지 바로가기")
-                }
             }
             item {
                 Row(

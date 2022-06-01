@@ -45,7 +45,7 @@ class GenerateCoverViewModel @Inject constructor(
     var bookPublisher by mutableStateOf("")
 
     lateinit var covers: List<Cover>
-
+    
     fun editTitle(title: String) {
         bookTitle = title
     }
