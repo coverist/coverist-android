@@ -16,7 +16,7 @@
 
 <br>
 
-# Tech
+# Android
 
 ### Language
 - `Kotlin`
@@ -24,7 +24,7 @@
 ### Architecture
 - `MVVM`
 
-### Other
+### Library
 - `Hilt`, `Compose`, `Coroutines`, `Flow`, `Retrofit`, `Room`
 
 <br>
