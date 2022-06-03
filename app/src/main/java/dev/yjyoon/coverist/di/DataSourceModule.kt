@@ -25,7 +25,7 @@ object DataSourceModule {
     @Singleton
     @Provides
     @Named("BaseUrl")
-    fun provideBaseUrl() = "http://3.37.43.37:8080/api/v1/"
+    fun provideBaseUrl() = "http://43.200.53.170:8080/api/v1/"
 
     @Singleton
     @Provides
