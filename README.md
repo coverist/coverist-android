@@ -1,50 +1,58 @@
-![header](https://user-images.githubusercontent.com/72238126/171427331-b444eef3-eb4e-4b18-b215-3f72e9bc2226.png)
-# Coverist - 북커버 생성 AI 서비스
+# Coverist Android
 
-본 서비스는 웹 소설 작가 및 개인 출판 업자를 위한 북커버 생성 AI 서비스 입니다.
+[Coverist](https://github.com/coverist/coverist) is a platform for document creation, management, and publishing.
 
-간단한 도서 및 웹 소설의 정보를 입력하는 것으로 세상에 없던 나만의 북커버를 생성할 수 있습니다.
+It offers a library of tools with which you can create documents with rich, contextual features, from nearly any device and any platform and with native UI support.
 
-<br>
+## How it works
 
-# Feature
+| Type of document | UI | Function | Access | Detail
+|------------| | | |----|----------|-------|
+| Fabric Editor | A touch UI to edit text and cover art and.... | `setCover` | `setCoverArt` | |
+[Add Cover](https://github.com/coverist/add-covers...)       | | `makeNewCover` | `makeNewCoverArt` |
+| Publish to Cloud | Publish a document to the Cloud | `publish` | `cloudPublish` | 
+| Download from Cloud | Download a document from the Cloud | `download` | `cloudDownload` | `downloadPdf` |
+| Import a document | Import a file of a document into the app | `import` | `importPdf` |
+| Delete a document | Delete a document in the app | `delete` | `cloudDelete` |
+| Load them | Load a group of documents | `loadDocuments` | `loadPdf` | `loadPdfFiles` | |
 
-- 도서 정보 입력
-- 도서 표지 생성
-- 표지 이미지 저장
-- 생성한 도서에 대한 표지 관리
+### How to use a document
 
-<br>
+| File  | Description   | Access  | Details |
+|----------|------|-----|----------|
+| `build-r.id` | Pseudo | `open`   | Private |
+| `resolution.id` | Pseudo | `open`   | Private |
+| `Sobre.id` | Pseudo | `open`   | Private |
+| `provider.id` | Pseudo | `open`   | Private |
+| `version.id` | Pseudo | `open`   | Public |
+| `resources.id` | Pseudo | `open`   | Public |
+* `pdfMenu`   | A menu of options to change compression |
+| `database`   | A database of information about your...... | `newBook` | `copyBook` | `copyCover` |
+| `export`    | A file to export a book into...... | `export` | `exportPdf` | `importBook` |
+* `importPdf` | A bundle of a document with information about it | `importPdfFiles` |
 
-# Android
+### How it works
 
-### Language
-- `Kotlin`
+![]( https://github.com/coverist/coverist-android/blob/master/img/next.png )
+### How to use a feature
 
-### Architecture
-- `MVVM`
+| Type | Description   | Access  | Details |
+|------|--|-----|-------- |
+| `insertCoverArt` | Insert a cover| `getImage` | 
+| `download`     | Pseudo | `open`   | Private |
+| `downloadPdf` | Pseudo | `open`   | Public |
+| `exportCoverArt`, `exportPdf` | Download a cover| `downloadPdf` | 
+| `export`       | Pseudo | `open`   | Private |
+| `exportPdfFiles` | Pseudo | `open`   | Public |
+| `importCoverArt` | Import a cover| `importPdfAndCover` |
+| `importCoverFiles` | Import a bundle of a document with information about it | `importPdfFiles` |
 
-### Library
-- `Hilt`, `Compose`, `Coroutines`, `Flow`, `Retrofit`, `Room`
+### How it works
 
-<br>
+![]( https://github.com/coverist/coverist-android/blob/master/img/prev.png )
+### How to use a plugin
 
-# ScreenShot
-
-<img width="30%" src="https://user-images.githubusercontent.com/72238126/171425292-a54e33e8-f207-4b36-80b0-81bb7a0eb9ea.png" /> 
-
-<p float="left">
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425263-322e0221-ab22-4e38-80dd-348a29e70208.jpg" /> 
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425258-c862748b-8c16-4ee5-a177-63a57226324d.jpg" /> 
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425271-fc309922-05ee-4cbb-914b-39365035808f.jpg" /> 
-</p>
-
-<p float="left">
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425276-6333f5ff-037f-474c-b60d-7b5bfc8f5a27.jpg" /> 
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425279-ab2379f9-8587-479c-a38f-7e4c7318c8f4.jpg" /> 
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425283-23841450-4c5a-4e4c-b5e4-7049cb05d315.jpg" /> 
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425285-0f0d0f44-4f63-4984-80b7-7e4de9b578f7.jpg" /> 
-  <img width="30%" src="https://user-images.githubusercontent.com/72238126/171425288-13dd0ac5-2448-4580-aad2-bbec1d7c1384.jpg" /> 
-</p>
-
-
+| Plugin | Name | Description |
+|-------------|-----|-------|
+| `cover-icons` | Add book cover icons to the app | `cover-icon-items` |
+| `cover-menu
